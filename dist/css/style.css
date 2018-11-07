@@ -1,0 +1,123 @@
+body, html{
+	height: 100%;
+}
+@font-face {
+ 	font-family: 'Roboto-Light';
+ 	src: url('../font/Roboto-Light.woff') format('woff'), url('../font/Roboto-Light.ttf') format('truetype');
+} 
+
+@font-face {
+ 	font-family: 'UTM-BanqueB';
+ 	src: url('../font/UTM-BanqueB.woff') format('woff'), url('../font/UTM-BanqueB.ttf') format('truetype');
+} 
+
+@font-face {
+ 	font-family: 'UTM-BanqueR';
+ 	src: url('../font/UTM-BanqueR.woff') format('woff'), url('../font/UTM-BanqueR.ttf') format('truetype');
+} 
+
+@font-face {
+ 	font-family: 'UTM-Bebas';
+ 	src: url('../font/UTM-Bebas.woff') format('woff'), url('../font/UTM-Bebas.ttf') format('truetype');
+} 
+
+body{
+	z-index: -999;
+	position: absolute;
+    background-image: url("../img/BG.png");
+    height: 100%; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#logo{
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 10%;
+}
+
+#main-area{
+	position: fixed;
+	left: 5%;
+	top: 5%;
+	height: 90%;
+	width: 58%;
+	text-align: center;
+}
+
+#board{
+	position: relative;
+	height: 40%;
+	top: 0;
+}
+
+#board-img{
+	position: relative;
+	height: 100%;
+	top: 0;
+}
+
+#board-text{
+	position: relative;
+	top: -16%;
+	font-family: 'UTM-Bebas';
+	color: white;
+	font-size: 18px;
+	padding-left: 7%;
+}
+
+#video{
+	position: relative;
+	/* top: 5%; */
+	/* background-color: black; */
+	height: 60%;
+	text-align: center;
+}
+
+#video img{
+	position: relative;
+	height: 100%;
+	max-width: 100%;
+	bottom: 0;
+	border: 2px solid white;
+}
+
+#info-area{
+	z-index: -888;
+	position: fixed;
+	top: 5%;
+	right: 5%;
+	background-image: url("../img/BG2.png");
+    height: 90%;
+    width: 30%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+}
+
+#avatar{
+	position: relative;
+	margin-top: 10%;
+	width: 80%;
+}
+
+#name{
+	position: relative;
+	top: 2%;
+	width: 100%;
+	font-family: 'UTM-BanqueB';
+	font-size: 25px;
+	color: white;
+}
+
+#description{
+	position: relative;
+	top: 2%;
+	width: 100%;
+	font-family: 'Roboto-Light';
+	font-size: 14px;
+	color: white;
+}
