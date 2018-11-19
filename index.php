@@ -31,7 +31,6 @@
     <link href="dist/css/style.css" rel="stylesheet">
 </head>
 <body>
-
     <img id="logo" src="dist/img/logo_white.png">
     <div id="main-area">
         <div id="board">
@@ -42,7 +41,12 @@
             <img src="<?php echo $camera['outHTTPUrl'] ?>" alt="">
         </div>
     </div>
-    <div id="info-area">
+    <div id="right-area">
+        <div id="info-area">
+        </div>
+        <div id="log-area">
+
+        </div>
     </div>
 </body>
 <script src="dist/js/jquery-3.2.1.min.js"></script>
@@ -53,6 +57,8 @@
         var idCamera = <?php echo $camera['idCamera'] ?>;
         var oldPerson = undefined;
         var duration = 0;
+        var log_person = new Array();
+        var log_duration = new Array();
         var MAX_DURATION = 10;
 
         function setEmpty(){
@@ -139,6 +145,20 @@
             }
         }
 
+        function setLogContent(){
+            var log_content = "<ul>";
+            for(var i = 0; i < log_person.length; i++){
+                log_content += "<li>";
+                log_content += "<img class='avatar' src='data:image/jpeg;base64, ";
+                log_content += log_person[i]['b64Face'];
+                log_content += "'>";
+                log_content += "<div class='name'>" + log_person[i]['name'] + "</div>";
+                log_content += "<div class='description'>" + log_person[i]['time'] + "</div>";
+                log_content += "</li>"
+            }
+            $('#log-area').html(log_content);
+        }
+
         function setContent(person){
             if(person['idPerson'] == -1) return;
             var name = person['name'];
@@ -147,12 +167,13 @@
             } else if(person['gender'] == 'Female' || person['gender'] == 'female'){
                 name = 'Ms. ' + name;
             }
+            person['name'] = name;
 
-            var content = "<img id='avatar' src='data:image/jpeg;base64, ";
+            var content = "<img class='avatar' src='data:image/jpeg;base64, ";
             content += person['b64Image'];
             content += "'>";
-            content += "<div id='name'>" + name + "</div>";
-            content += "<div id='description'>" + person['description'] + "</div>";
+            content += "<div class='name'>" + name + "</div>";
+            content += "<div class='description'>" + person['description'] + "</div>";
 
             $('#info-area').html(content);
             var hour = person['time'].split(/[- :]/)[3];
@@ -168,13 +189,27 @@
             maxid = person['idImage'];
             oldPerson = person['idPerson'];
             duration = MAX_DURATION;
+
+
+
+            for(var i = 0; i < log_person.length; i++){
+                if(log_person[i]['idPerson'] == person['idPerson']){
+                    log_person.splice(i, 1);
+                    log_duration.splice(i, 1);
+                    break;
+                }
+            }
+            log_person.unshift(person);
+            log_duration.unshift(MAX_DURATION);
+            log_person = log_person.slice(0, 5);
+            log_duration = log_duration.slice(0, 5);
         }
 
         function getCurrentLog(){
             var dict = {
                 type: 'POST',
                 url: 'post_log.php',
-                data: {'maxid': maxid, 'idCamera': idCamera},
+                data: {'maxid': maxid-1, 'idCamera': idCamera},
                 dataType: 'json',
                 success: function (data) {
                     // console.log('success');
@@ -194,11 +229,19 @@
         };
 
         function countDown(){
-            if (duration == 0){
-                setEmpty();
-            } else {
-                duration -= 1;
+            duration -= 1;
+            if (duration <= 0) setEmpty();
+            for (var i = 0; i < log_duration.length; i++){
+                log_duration[i] -= 1;
+                if(log_duration[i] <= 0){
+                    if(log_duration[i] == 0){
+                        log_person.splice(i, 1);
+                        log_duration.splice(i, 1);
+                        i -= 1;
+                    }
+                }
             }
+            setLogContent();
             setTimeout(countDown, 1000);
         }
         setTimeout(getCurrentLog, 200);
