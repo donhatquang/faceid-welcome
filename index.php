@@ -15,6 +15,13 @@
         exit(1);
     }
     $maxid = $model->fetch_one("SELECT max(idImage) as maxid FROM image WHERE image.idCamera=".$camera['idCamera'])['maxid'];
+
+
+
+    $maxid = $maxid == null?0:$maxid;
+/*var_dump($maxid);
+
+    exit();*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,12 +38,15 @@
     <link href="dist/css/style.css" rel="stylesheet">
 </head>
 <body>
-    <img id="logo" src="dist/img/logo_white.png">
+
+<!--<img id="logo" src="dist/img/logo_white.png">-->
+
     <div id="main-area">
-        <div id="board">
+        <!--<div id="board">
             <img id="board-img" src="dist/img/Blank-03.png">
             <div id="board-text"></div>
-        </div>
+        </div>-->
+
         <div id="video">
             <img src="<?php echo $camera['outHTTPUrl'] ?>" alt="">
         </div>
@@ -221,7 +231,7 @@
                         console.log(row);
                         setContent(row);
                     }
-                    setTimeout(getCurrentLog, 200);
+                    setTimeout(getCurrentLog, 500);
                 }
             };
             // console.log(dict);

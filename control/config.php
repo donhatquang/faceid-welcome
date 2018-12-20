@@ -1,7 +1,7 @@
 <?php
 	$hostname = "localhost";
 	$user = "root";
-	$password = "";
+	$password = "root";
 	$database = "faceid";
 	//ket noi csdl, ket qua tra ve bien $con
 	$con = mysqli_connect($hostname,$user,$password,$database);

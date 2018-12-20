@@ -29,7 +29,7 @@ ul, li{
 body{
 	z-index: -999;
 	position: absolute;
-    background-image: url("../img/BG.png");
+    background-image: url("../img/event/Interact-Christmas-01.png");
     height: 100%; 
     background-position: center;
     background-repeat: no-repeat;
@@ -73,12 +73,23 @@ body{
 	padding-left: 7%;
 }
 
-#video{
+/*#video{
 	position: relative;
-	/* top: 5%; */
-	/* background-color: black; */
+	!* top: 5%; *!
+	!* background-color: black; *!
 	height: 60%;
 	text-align: center;
+}*/
+
+#video {
+
+	position: fixed;
+	/* top: 5%; */
+	/* background-color: black; */
+	height: 40%;
+	text-align: center;
+	bottom: 100px;
+	right: 100px;
 }
 
 #video img{
@@ -94,7 +105,7 @@ body{
 	position: fixed;
 	top: 5%;
 	right: 5%;
-	background-image: url("../img/BG2.png");
+	/*background-image: url("../img/BG2.png");*/
     height: 90%;
     width: 30%;
     background-position: center;
@@ -105,8 +116,8 @@ body{
 #info-area{
 	z-index: -888;
 	position: fixed;
-	top: 5%;
-	right: 5%;
+	top: 10%;
+	right: 10%;
 	/* background-image: url("../img/BG2.png"); */
     height: 40%;
     width: 30%;
@@ -114,13 +125,23 @@ body{
     /* background-repeat: no-repeat; */
     /* background-size: cover; */
 	text-align: center;
-	border-bottom: 3px solid white;
+	/*border-bottom: 3px solid white;*/
 }
+
+/*.avatar {
+	position: absolute;
+	!* padding-top: 10%; *!
+	height: 50%;
+	border-radius: 50%;
+	top: 20%;
+}*/
 
 #info-area .avatar{
 	position: relative;
-	padding-top: 10%;
-	height: 60%;
+	height: 50%;
+	border-radius: 50%;
+	border-color: green;
+	border: 4px solid green;
 }
 
 #info-area .name{
@@ -141,7 +162,18 @@ body{
 	color: white;
 }
 
-#log-area{
+#log-area {
+	z-index: -888;
+	position: fixed;
+	top: 45%;
+	left: 12%;
+	height: 50%;
+	width: 30%;
+	/* border-top: 3px solid white; */
+	/* display: none; */
+}
+
+/*#log-area{
 	z-index: -888;
 	position: fixed;
 	top: 45%;
@@ -149,7 +181,8 @@ body{
     height: 50%;
     width: 30%;
 	border-top: 3px solid white;
-}
+	!*display: none;*!
+}*/
 
 #log-area ul {
 	position: relative;
@@ -160,16 +193,18 @@ body{
 	position: relative;
 	height: 20%;
 	/* box-shadow: white inset 0px 0px 0px 1px; */
-	border-bottom: 1px solid white;
+	/*border-bottom: 1px solid white;*/
 	box-sizing: border-box;
 }
 
 #log-area ul li .avatar {
 	position: relative;
-	padding-top: 1%;
-	left: 5%;
-	height: 85%;
+	padding-top: 0%;
+	top:-30px;
+	left: 0%;
+	height: 150%;
 	float: left;
+	border-radius: 50%;
 }
 
 #log-area ul li .name {
