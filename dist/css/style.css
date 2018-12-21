@@ -36,6 +36,10 @@ body{
     background-size: cover;
 }
 
+canvas {
+	display: block;
+}
+
 #logo{
 	position: fixed;
 	left: 0;
@@ -44,12 +48,18 @@ body{
 }
 
 #main-area{
-	position: fixed;
+	/*position: fixed;*/
 	left: 5%;
 	top: 5%;
 	height: 90%;
 	width: 58%;
 	text-align: center;
+}
+.video {
+
+	position: fixed;
+	left: 0px;
+	bottom: 0px;
 }
 
 #board{

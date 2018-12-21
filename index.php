@@ -35,11 +35,71 @@
     <meta http-equiv="refresh" content="3600" >
 <!--     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png"> -->
     <title>FaceID Welcome</title>
-    <link href="dist/css/style.css" rel="stylesheet">
+    <link href="dist/css/style.css?<?php echo rand(); ?>" rel="stylesheet">
+    <script src="dist/js/snow.js" language="JavaScript"></script>
 </head>
 <body>
 
+<!--<div >
+<iframe id="youtube-iframe" width="177" height="100" src="https://www.youtube.com/embed/2ES1N39XjlI?enablejsapi=1&controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>-->
+
+<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+<div id="player" class="video"></div>
+
+<script>
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '100',
+            width: '177',
+            videoId: '2ES1N39XjlI',
+            startSeconds: 10,
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+
+        event.target.setVolume(30);
+        event.target.setLoop(true);
+
+        event.target.playVideo();
+
+        console.log("youtube ok");
+    }
+
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    var done = false;
+    function onPlayerStateChange(event) {
+        /*if (event.data == YT.PlayerState.PLAYING && !done) {
+            setTimeout(stopVideo, 6000);
+            done = true;
+        }*/
+    }
+    function stopVideo() {
+        player.stopVideo();
+    }
+</script>
 <!--<img id="logo" src="dist/img/logo_white.png">-->
+
+<!--SNOW-->
+<canvas id="canvas"></canvas>
 
     <div id="main-area">
         <!--<div id="board">
