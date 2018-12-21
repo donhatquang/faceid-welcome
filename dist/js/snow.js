@@ -4,8 +4,8 @@ window.onload = function(){
     var ctx = canvas.getContext("2d");
 
     //canvas dimensions
-    var W = window.innerWidth;
-    var H = window.innerHeight;
+    var W = window.innerWidth*0.9;
+    var H = window.innerHeight*0.9;
     canvas.width = W;
     canvas.height = H;
 

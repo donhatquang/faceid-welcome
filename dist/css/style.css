@@ -48,7 +48,7 @@ canvas {
 }
 
 #main-area{
-	/*position: fixed;*/
+	position: fixed;
 	left: 5%;
 	top: 5%;
 	height: 90%;
