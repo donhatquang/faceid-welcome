@@ -29,7 +29,7 @@ ul, li{
 body{
 	z-index: -999;
 	position: absolute;
-    background-image: url("../img/event/Interact-Christmas-01.png");
+    background-image: url("../img/event/Interact-new-years.png");
     height: 100%; 
     background-position: center;
     background-repeat: no-repeat;
@@ -92,14 +92,13 @@ canvas {
 }*/
 
 #video {
-
 	position: fixed;
 	/* top: 5%; */
 	/* background-color: black; */
-	height: 40%;
+	height: 50%;
 	text-align: center;
 	bottom: 100px;
-	right: 100px;
+	left: 25%;
 }
 
 #video img{
@@ -127,7 +126,7 @@ canvas {
 	z-index: -888;
 	position: fixed;
 	top: 10%;
-	right: 10%;
+	right: 0%;
 	/* background-image: url("../img/BG2.png"); */
     height: 40%;
     width: 30%;
@@ -181,6 +180,8 @@ canvas {
 	width: 30%;
 	/* border-top: 3px solid white; */
 	/* display: none; */
+
+	display: none;
 }
 
 /*#log-area{

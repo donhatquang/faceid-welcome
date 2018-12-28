@@ -16,8 +16,6 @@
     }
     $maxid = $model->fetch_one("SELECT max(idImage) as maxid FROM image WHERE image.idCamera=".$camera['idCamera'])['maxid'];
 
-
-
     $maxid = $maxid == null?0:$maxid;
 /*var_dump($maxid);
 
@@ -59,6 +57,9 @@
     //    after the API code downloads.
     var player;
     function onYouTubeIframeAPIReady() {
+
+        return;
+
         player = new YT.Player('player', {
             height: '100',
             width: '177',
