@@ -1,11 +1,6 @@
 body, html{
 	height: 100%;
 }
-ul, li{
-	padding: 0;
-	margin: 0;
-	list-style-type: none;
-}
 @font-face {
  	font-family: 'Roboto-Light';
  	src: url('../font/Roboto-Light.woff') format('woff'), url('../font/Roboto-Light.ttf') format('truetype');
@@ -29,15 +24,11 @@ ul, li{
 body{
 	z-index: -999;
 	position: absolute;
-    background-image: url("../img/event/Interact-new-years.png");
+    background-image: url("../img/BG.png");
     height: 100%; 
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-}
-
-canvas {
-	display: block;
 }
 
 #logo{
@@ -54,12 +45,6 @@ canvas {
 	height: 90%;
 	width: 58%;
 	text-align: center;
-}
-.video {
-
-	position: fixed;
-	left: 0px;
-	bottom: 0px;
 }
 
 #board{
@@ -83,22 +68,12 @@ canvas {
 	padding-left: 7%;
 }
 
-/*#video{
+#video{
 	position: relative;
-	!* top: 5%; *!
-	!* background-color: black; *!
-	height: 60%;
-	text-align: center;
-}*/
-
-#video {
-	position: fixed;
 	/* top: 5%; */
 	/* background-color: black; */
-	height: 50%;
+	height: 60%;
 	text-align: center;
-	bottom: 100px;
-	left: 25%;
 }
 
 #video img{
@@ -109,128 +84,38 @@ canvas {
 	border: 2px solid white;
 }
 
-#right-area{
+#info-area{
 	z-index: -888;
 	position: fixed;
 	top: 5%;
 	right: 5%;
-	/*background-image: url("../img/BG2.png");*/
+	background-image: url("../img/BG2.png");
     height: 90%;
     width: 30%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    text-align: center;
 }
 
-#info-area{
-	z-index: -888;
-	position: fixed;
-	top: 10%;
-	right: 0%;
-	/* background-image: url("../img/BG2.png"); */
-    height: 40%;
-    width: 30%;
-    /* background-position: center; */
-    /* background-repeat: no-repeat; */
-    /* background-size: cover; */
-	text-align: center;
-	/*border-bottom: 3px solid white;*/
-}
-
-/*.avatar {
-	position: absolute;
-	!* padding-top: 10%; *!
-	height: 50%;
-	border-radius: 50%;
-	top: 20%;
-}*/
-
-#info-area .avatar{
+#avatar{
 	position: relative;
-	height: 50%;
-	border-radius: 50%;
-	border-color: green;
-	border: 4px solid green;
+	margin-top: 10%;
+	width: 80%;
 }
 
-#info-area .name{
+#name{
 	position: relative;
 	top: 2%;
 	width: 100%;
 	font-family: 'UTM-BanqueB';
-	font-size: 20px;
+	font-size: 25px;
 	color: white;
 }
 
-#info-area .description{
+#description{
 	position: relative;
 	top: 2%;
-	width: 100%;
-	font-family: 'Roboto-Light';
-	font-size: 14px;
-	color: white;
-}
-
-#log-area {
-	z-index: -888;
-	position: fixed;
-	top: 45%;
-	left: 12%;
-	height: 50%;
-	width: 30%;
-	/* border-top: 3px solid white; */
-	/* display: none; */
-
-	display: none;
-}
-
-/*#log-area{
-	z-index: -888;
-	position: fixed;
-	top: 45%;
-	right: 5%;
-    height: 50%;
-    width: 30%;
-	border-top: 3px solid white;
-	!*display: none;*!
-}*/
-
-#log-area ul {
-	position: relative;
-	height: 100%;
-}
-
-#log-area ul li {
-	position: relative;
-	height: 20%;
-	/* box-shadow: white inset 0px 0px 0px 1px; */
-	/*border-bottom: 1px solid white;*/
-	box-sizing: border-box;
-}
-
-#log-area ul li .avatar {
-	position: relative;
-	padding-top: 0%;
-	top:-30px;
-	left: 0%;
-	height: 150%;
-	float: left;
-	border-radius: 50%;
-}
-
-#log-area ul li .name {
-	position: relative;
-	padding-top: 1%;
-	left: 8%;
-	width: 100%;
-	font-family: 'Roboto-Light';
-	font-size: 14px;
-	color: white;
-}
-
-#log-area ul li .description {
-	position: relative;
-	left: 8%;
 	width: 100%;
 	font-family: 'Roboto-Light';
 	font-size: 14px;

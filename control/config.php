@@ -1,6 +1,6 @@
 <?php
 //	$hostname = "localhost";
-$hostname = "192.168.51.12";
+$hostname = "localhost";
 	$user = "root";
 	$password = "root";
 	$database = "faceid";

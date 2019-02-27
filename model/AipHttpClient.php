@@ -169,7 +169,7 @@ class AipHttpClient
 
 //var_dump($params);
 
-        echo $url = $this->buildUrl($url, $params);
+        $url = $this->buildUrl($url, $params);
 
 //exit();
         $headers = array_merge($this->headers, $this->buildHeaders($headers));

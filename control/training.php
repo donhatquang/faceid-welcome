@@ -15,18 +15,19 @@ $data = json_decode($data, false);
 //echo count($data);
 //var_dump($data[0]);
 
-$photo_album = "0b18c1df-a5f5-9c8b-7a3f-524c7f088bfd";
+$photo_album = "4de9c961-9b3a-4b78-adcf-5b42fd2d9193";
 
 foreach ($data as $key=>$person) {
 
     $FaceID = new FaceID();
     $FaceID->setPhotoAlbum($photo_album);
 
-//    if ($key < 1) {
+    if ($key >= 1) {
 
-        var_dump($person);
+//        var_dump($person);
 
-        echo $Face->addPerson($person);
-//    }
+        $result = $FaceID->addPerson($person);
+        var_dump($result);
+    }
 }
 

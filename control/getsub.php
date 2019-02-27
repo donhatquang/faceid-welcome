@@ -5,11 +5,12 @@
  * Date: 2/26/2019
  * Time: 5:08 PM
  */
+header("Content-type: application/json; charset:utf-8");
 
 require("../model/FaceID.php");
 
-$url=$_SERVER['REQUEST_URI'];
-header("Refresh: 5; URL=$url");
+$url = $_SERVER['REQUEST_URI'];
+//header("Refresh: 5; URL=$url");
 
 $FaceID = new FaceID();
 $threshold = 70;
@@ -51,19 +52,23 @@ foreach ($sub as $key => $item) {
     if ($person->messageType == "MESSAGE_TYPE_ALERT") {
 
         $person = array(
-
+            "ackID" => $ackID,
             "tags" => $person->originalPhotoTags,
             "score" => $person->score,
             "capture" => $person->capturedPhotos->face,
-            "photoID" => $person->extraTopk[0]->photoId
+            "photoID" => $person->extraTopk[0]->photoId,
+            "capturedTime" => $person->capturedTime
+
         );
 
         $data[] = $person;
 
-        echo '<h1>'.$person["score"].'</h1>';
-        echo '<img src="http://192.168.51.12:8080/v4/photos/' . $person["capture"] . '/data"/>';
+//        echo '<h1>' . $person["score"] . '</h1>';
+//        echo '<img src="http://192.168.51.12:8080/v4/photos/' . $person["capture"] . '/data"/>';
 
-        var_dump($person);
+//        var_dump($person);
 
     }
 }
+
+echo json_encode($data);

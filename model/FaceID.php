@@ -48,7 +48,8 @@ class FaceID
             "data" => $person->b64Face,
 
             "tags" => array(
-
+                "name" => $person->unicodeName,
+                "description" => $person->description,
                 "country" => $person->country,
                 "gender" => $person->gender,
                 "birthday" => $person->birthday,
@@ -57,17 +58,18 @@ class FaceID
             )
         );
 
-        $result = $this->postdata($data, $url);
+        $result = $this->http->post($url, json_encode($data));
 
         return $result;
     }
 
-    public function getsub($subscribe, $param) {
+    public function getsub($subscribe, $param)
+    {
 
         //API URL
-        $subscribe = rawurlencode ($subscribe);
+        $subscribe = rawurlencode($subscribe);
 
-        $url = $this->host . '/subscriptions/'.$subscribe."/messages";
+        $url = $this->host . '/subscriptions/' . $subscribe . "/messages";
 
         $result = $this->http->get($url, $param);
 
@@ -82,12 +84,22 @@ class FaceID
         return $result;
     }
 
-    public function confirm($ackid) {
+    public function confirm($subscribe, $ackids)
+    {
+
+        //API URL
+        $subscribe = rawurlencode($subscribe);
+
+        $url = $this->host . '/subscriptions/' . $subscribe . "/messages/acknowledge";
+//        $data = json_encode($ackids);
 
 
-//        {"ackIds":["f43b2058-ab42-714a-ad41-dcf15bc61597"]}:
 
-        return;
+        $result = $this->http->post($url, $ackids);
+
+        //        {"ackIds":["f43b2058-ab42-714a-ad41-dcf15bc61597"]}:
+
+        return $result;
     }
 
     public function postdata($data, $url)
