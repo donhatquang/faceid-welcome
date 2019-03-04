@@ -10,6 +10,23 @@ require("AipHttpClient.php");
 class FaceID
 {
     private $host = "http://192.168.51.12:8080/v4";
+
+    /**
+     * @return string
+     */
+    public function getHost(): string
+    {
+        return $this->host;
+    }
+
+    /**
+     * @param string $host
+     */
+    public function setHost(string $host)
+    {
+        $this->host = $host;
+    }
+
     private $photo_album;
     private $http;
 
@@ -84,6 +101,48 @@ class FaceID
         return $result;
     }
 
+
+    public function analyze($photoData)
+    {
+
+        $url = $this->host . '/query/analyze';
+
+//        $data = array("photoData" => $photoData,
+
+
+        $data = '{
+            "analyzeOptions" : {
+                "attributeTypes" : {
+                "age" : true,
+                "blurriness" : true,
+                "eyeStatus" : true,
+                "gender" : true,
+                "minority" : true,
+                "mouthStatus" : true,
+                "pose" : true,
+                "quality" : true
+                },
+                "qualityCheckOptions" : {
+                    "scenario" : "CAPTURE"
+                },
+                "extractFeature" : true,
+                "extractLandmark" : true
+            },
+            "photoData": "'.$photoData.'"
+            }';
+
+//        $data = json_encode($data);
+//        echo $data;
+//        exit();
+
+        $result = $this->http->post($url, $data);
+
+        $result = ($result["content"]);
+
+        return $result;
+
+    }
+
     public function confirm($subscribe, $ackids)
     {
 
@@ -92,7 +151,6 @@ class FaceID
 
         $url = $this->host . '/subscriptions/' . $subscribe . "/messages/acknowledge";
 //        $data = json_encode($ackids);
-
 
 
         $result = $this->http->post($url, $ackids);

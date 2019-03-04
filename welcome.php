@@ -2,8 +2,8 @@
 
 $param = array(
 
-    "wait" => 2,
-    "limit" => 5
+    "wait" => 5,
+    "limit" => 10
 );
 
 if (isset($_GET["wait"])) {
@@ -62,7 +62,7 @@ $param_str = json_encode($param);
 </div>
 <script src="dist/js/jquery-3.2.1.min.js"></script>
 <script src='dist/js/responsivevoice.js'></script>
-<script src='dist/js/main.js'></script>
+<script src='dist/js/main.js?<?php echo rand(); ?>'></script>
 </body>
 
 </html>

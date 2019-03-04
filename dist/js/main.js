@@ -3,15 +3,17 @@ $(function () {
     var oldPerson = undefined;
     var duration = 0;
     var MAX_DURATION = 10;
+
+    var max_timeout = 1000*10;
     var host = "http://192.168.51.12:8080/v4";
 
-    function setEmpty() {
+   /* function setEmpty() {
         $('#info-area').html("");
         $('#board-img').attr('src', 'dist/img/Blank-03.png');
         $('#board-text').html('');
         oldPerson = undefined;
         duration = 0;
-    }
+    }*/
 
     function speak(person) {
         var isJapan = false;
@@ -229,11 +231,11 @@ $(function () {
             subinit(new_data);
 
             /*CONFIRM MESSAGE*/
-            setTimeout(confirm(data), 1000);
+            // setTimeout(confirm(data), 1000);
         })
 
         /*REQUEST AGAIN*/
-        setTimeout(getsub, 3000);
+        setTimeout(getsub, max_timeout);
 
         return;
     }
@@ -256,23 +258,23 @@ $(function () {
                 console.log(data);
                 subinit(data);
 
-                setTimeout(getCurrentLog, 1000);
+                setTimeout(getCurrentLog, max_timeout);
             }
         };
         // console.log(dict);
         $.ajax(dict);
     };
 
-    function countDown() {
+/*    function countDown() {
         if (duration == 0) {
             setEmpty();
         } else {
             duration -= 1;
         }
         setTimeout(countDown, 1000);
-    }
+    }*/
 
 
-    setTimeout(getsub, 1000);
+    setTimeout(getsub);
     // setTimeout(countDown, 1000);
 });
