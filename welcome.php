@@ -61,7 +61,8 @@ $param_str = json_encode($param);
 <div id="info-area">
 </div>
 <script src="dist/js/jquery-3.2.1.min.js"></script>
-<script src='dist/js/responsivevoice.js'></script>
+<!--<script src='dist/js/responsivevoice.js'></script>-->
+<script src='dist/js/FaceID.js?<?php echo rand(); ?>'></script>
 <script src='dist/js/main.js?<?php echo rand(); ?>'></script>
 </body>
 

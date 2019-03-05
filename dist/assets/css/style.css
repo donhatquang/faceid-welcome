@@ -1,0 +1,53 @@
+body{
+    color: #050c2e;
+    font-size: 15pt;
+}
+.confetti {
+    background-image: url("../../image/BG-01.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: fixed;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+}
+.logo {
+    z-index: 0;
+    width: 100%;
+    background-size: cover;
+}
+.main{
+    display: flex;
+    padding-bottom: 1%;
+}
+.layer{
+    width: 100%;
+    background-size: cover;
+}
+.interact{
+    background-size: cover;
+    padding: 10px;
+    color: white;
+    background-color: #88b1e47a;
+    border-radius: 45px;
+}
+.interact-left{
+    min-height: 500px;
+    text-align: right;
+}
+.interact-right{
+    text-align: left;
+}
+.text-card{
+    padding-top: 15px;
+}
+.people{
+    width: 120px;
+    border-radius: 100%;
+}
+.progress-bar{
+    background-color: #25aeff;
+}

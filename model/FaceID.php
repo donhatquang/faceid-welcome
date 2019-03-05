@@ -131,10 +131,6 @@ class FaceID
             "photoData": "'.$photoData.'"
             }';
 
-//        $data = json_encode($data);
-//        echo $data;
-//        exit();
-
         $result = $this->http->post($url, $data);
 
         $result = ($result["content"]);
