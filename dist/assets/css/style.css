@@ -43,6 +43,7 @@ body{
 }
 .text-card{
     padding-top: 15px;
+    padding-bottom: 15px;
 }
 .people{
     width: 120px;
@@ -50,4 +51,33 @@ body{
 }
 .progress-bar{
     background-color: #25aeff;
+}
+.description {
+    font-size:small;
+}
+.crown-left{
+    width: 25%;
+    position: absolute;
+    bottom: 78%;
+    left: 56%;
+}
+.crown-right{
+    width: 25%;
+    position: absolute;
+    bottom: 78%;
+    left: 18%;
+}
+.result-people{
+    position: relative;
+}
+.gender-left{
+    width: 18%;
+    position: absolute;
+    right: 1%;
+    bottom: 0;
+}
+.gender-right{
+    width: 18%;
+    position: absolute;
+    bottom: 0;
 }

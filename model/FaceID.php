@@ -10,6 +10,15 @@ require("AipHttpClient.php");
 class FaceID
 {
     private $host = "http://192.168.51.12:8080/v4";
+    private $con;
+
+    /**
+     * @param mixed $con
+     */
+    public function setCon($con)
+    {
+        $this->con = $con;
+    }
 
     /**
      * @return string
@@ -128,15 +137,94 @@ class FaceID
                 "extractFeature" : true,
                 "extractLandmark" : true
             },
-            "photoData": "'.$photoData.'"
+            "photoData": "' . $photoData . '"
             }';
 
         $result = $this->http->post($url, $data);
 
         $result = ($result["content"]);
 
+//        var_dump($result);
+
         return $result;
 
+    }
+
+    public function getPerson($photoID)
+    {
+
+        $sql = "SELECT * FROM `monitor` WHERE `photoID` LIKE '" . $photoID . "' ORDER BY quality DESC LIMIT 5";
+        $query = $this->con->query($sql);
+
+        if ($query->num_rows != 0) {
+
+            return $query->fetch_object();
+        }
+        else
+            return false;
+    }
+
+    public function addDB($photoID, $name, $capture, $face)
+    {
+
+        $quality = round($face->attributes->quality * 100, 2);
+        $face_analyze = json_encode($face->attributes);
+
+        $getPerson = $this->getPerson($photoID);
+
+        if ($getPerson == false) {
+
+            $sql = "INSERT INTO `monitor`(`photoID`, `name`, `face_analyze`,`quality`, `capture`)
+          VALUES ('" . $photoID . "', '" . $name . "', '" . $face_analyze . "', '" . $quality . "', '" . $capture . "')";
+
+        } else {
+
+             $sql = "UPDATE `monitor` SET 
+`quality` = '91.4',
+`face_analyze` = '" . $face_analyze . "',
+`quality` = '" . $quality . "',
+`capture` = '" . $capture . "'
+ 
+ WHERE `monitor`.`id` LIKE '" . $getPerson->id . "'";
+
+        }
+
+        $query = $this->con->query($sql);
+
+//        echo $this->con->error;
+//        echo $this->con->affected_rows;
+
+        //        echo mysqli_error($this->con);
+//        var_dump($query);
+
+//        echo "<hr/>";
+//        echo $id = $this->con->insert_id;
+
+        return;
+
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHighQuality()
+    {
+
+        $sql = "SELECT * FROM `monitor` ORDER BY quality DESC LIMIT 30";
+        $query = $this->con->query($sql);
+
+        $result = array();
+
+        if ($query->num_rows > 0) {
+
+            while ($row = $query->fetch_object()) {
+                $row->face_analyze = json_decode($row->face_analyze);
+                $result[] = $row;
+
+            }
+
+        }
+        return $result;
     }
 
     public function confirm($subscribe, $ackids)

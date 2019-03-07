@@ -1,29 +1,33 @@
 var FaceID = function () {
 
     var config = {
-        max_timeout: 1000 * 10,
+        max_timeout: 1000 * 1,
+        ack_max_timeout: 1000 * 1,
         host: "http://192.168.51.12:8080/v4",
-        area: '.faceid-list'
+        area: '.faceid-list',
+        flag: true, /*true is init ready*/
+        ack: true
     };
     var subscribe = subscribe_config;
 
-    var flag = false;
+    // var flag = false;
 
     /*INIT UI*/
     var subinit = function (data) {
 
-        $(config.area).html("");
+        /*REMOVE*/
+        $(config.area + "-1").html("");
 
         // console.log(data);
         for (i in data) {
 
-            if (i>=10) return;
+            if (i >= 10) return;
 
-            if (i<5) {
-                var area = config.area+"-1";
+            if (i < 5) {
+                var area = config.area + "-1";
             }
-            else if (i>=5) {
-                area = config.area+"-2";
+            else if (i >= 5) {
+                area = config.area + "-1";
             }
 
             //-------------
@@ -33,46 +37,47 @@ var FaceID = function () {
 
             var photoID = person.photoID;
             var capture = person.capture;
+            var score = Math.round(person.score);
 
             var name = info.name;
             var date = new Date(person.capturedTime);
-            var idPerson = info.idPerson;
+            // var idPerson = info.idPerson;
 
-
-
+            /*IMAGE*/
             var image = $("<img class=\"\">").attr({
-                "src": config.host + '/photos/' + capture + '/data',
-                "class": "people"
+
+                "class": "people",
+                "src": config.host + '/photos/' + capture + '/data'
 
             }).prop('outerHTML');
 
+
             var datetime = date.getDate() + "/" + date.getMonth() + "-" + date.getHours() + ":" + date.getMinutes();
 
-            var text = '  <div class="row text-card" id="' + idPerson + '">\n' +
+            /*CHECK EXIST*/
+            // if ($("div[data-rel='"+photoID+"']").length == 0) {}
+
+            var text = '  <div class="row text-card" data-rel="' + photoID + '">\n' +
                 '                            <div class="col-xl-8">\n' +
                 '                                <div class="title">' + name + '</div>\n' +
-                '                                <p>' + info.description + '</p>\n' +
-                '                                <p>' + datetime + '</p>\n' +
+                '                                <div class="description">' + info.description + '</div>\n' +
+                '                                <p>' + datetime  + '</p>\n' + //+ ' (Score: ' + score
                 '                                <div class="progress">\n' +
                 '                                    <div class="progress-bar progress-bar-striped progress-bar-animated nice" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>\n' +
                 '                                </div>\n' +
                 '                            </div>\n' +
                 '                            <div class="col-xl-4">\n' + image +
 
+
+                /*GENDER*/
+
                 '                            </div>\n' +
                 '                        </div>';
 
-
-            /* var text = "<div id='" + idPerson + "'>";
-             text += "<div class='name'>" + name + "</div>";
-             text += "<div class='description'>" + info.description + "(" + date.getDate() + "/" + date.getMonth() + "-" + date.getHours() + ":" + date.getMinutes() + ")</div>";
-             // text += "<div class='datetime'>" + "</div>";
-             text += "</div>";
- */
             $(area).append(text);
 
             /*ANALYZE*/
-            analyze(photoID, info);
+            analyze(person);
 
         }
         return;
@@ -81,53 +86,69 @@ var FaceID = function () {
     /*GET SUBSCRIBE*/
     var setFlag = function (status) {
 
-        flag = status;
+        config.flag = status;
     };
 
     var getsub = function () {
 
         var url = 'control/getsub.php';
+        var flag = config.flag;
 
         $.getJSON(url, subscribe, function (data) {
-
-            console.log("Flag: "+flag);
-
-            if (flag == true) return;
 
             //--------------
 
             /*REMOVE DUPLICATE*/
             var new_data = removeDuplicates(data);
 
-            // console.log(new_data);
+            console.log("Flag: " + flag);
+            if (flag == true) {
 
-            /*INIT*/
-            subinit(new_data);
+                /*INIT*/
+                subinit(new_data);
+            }
 
             /*CONFIRM MESSAGE*/
-            setTimeout(confirm(data), 1000);
-        })
+            if (new_data.length != 0) {
 
-        /*REQUEST AGAIN*/
-        setTimeout(getsub, config.max_timeout);
+                setTimeout(confirm(data), config.ack_max_timeout);
+            }
+
+            /*REQUEST AGAIN*/
+            setTimeout(getsub, config.max_timeout);
+            // setTimeout(getMonitor, config.max_timeout);
+
+        })
 
         return;
     };
 
     /*ANALYZE*/
-    var analyze = function (photoID, info) {
+    var analyze = function (person) {
 
         // return;
 
+        // photoID, name, capture,
+
         var url = 'control/analyze.php';
-        var idPerson = info.idPerson, name = info.name;
+        var info = person.tags;
+
+        // var idPerson = info.idPerson;
+        var name = info.name;
+
+        var photoID = person.photoID;
+        var capture = person.capture;
+
         var param = {
 
-            photoID: photoID
+            photoID: photoID,
+            name: name,
+            capture: capture,
+
         }
 
         /**/
-        if (idPerson == "" || idPerson == 0) return;
+        var obj = $("div[data-rel='" + photoID + "']");
 
         $.getJSON(url, param, function (data) {
 
@@ -136,14 +157,25 @@ var FaceID = function () {
             var attr = data.attributes;
 
             var age = Math.round(attr.age);
-            var quality = Math.round(attr.quality*100*0.7)+"%";
+            var gender = attr.gender;
+            var quality = Math.round(attr.quality * 100 * 0.8) + "%";
 
-            $("#"+idPerson).find(".title").append(" (Age: "+age+")");
-            $("#"+idPerson).find(".progress-bar").css({width: quality}).html(quality);
+            var image_gender = $("<img class=\"\">").attr({
 
-            console.log(idPerson + " " +name);
+                "class": "gender-left",
+                "src": 'dist/image/'+gender.toLocaleLowerCase()+".png"
+
+            }).prop('outerHTML');
+
+
+            obj.find(".title").append(" (Age: " + age + ")");
+            obj.find(".progress-bar").css({width: quality}).html(quality);
+
+            obj.find(".people").after(image_gender);
+
+            console.log(name);
             // console.log();
-            console.log("blur:"+ attr.blurriness);
+            // console.log("blur:"+ attr.blurriness);
 
             /*
            "attributes": {
@@ -200,8 +232,97 @@ var FaceID = function () {
         return collection;
     };
 
+    var getMonitor = function () {
+
+
+        var url = 'control/monitor.php';
+
+        var param = {
+
+            action: "getHighQuality"
+        }
+
+        $.getJSON(url, param, function (data) {
+
+            console.log("Top 5:");
+            console.log(data);
+
+            initMonitor(data);
+        });
+
+        return;
+    }
+
+    var initMonitor = function (data) {
+
+        $(config.area + "-2").html("");
+
+        var count = 0;
+
+        for (i in data) {
+
+            if (count == 5) return;
+
+            var person = data[i];
+            var photoID = person.photoID;
+            var name = person.name;
+            var quality = Math.round(person.quality*0.8);
+            var datetime = person.datetime;
+            // var capture = person.capture;
+
+            /*GET analyze*/
+            var analyze = person.face_analyze;
+            var gender = analyze.gender;
+
+
+            /*IMAGE*/
+            var image = $("<img class=\"\">").attr({
+                "src": config.host + '/photos/' + photoID + '/data',
+                "class": "people"
+
+            }).prop('outerHTML');
+
+
+            if (gender == "FEMALE") {
+
+                count++;
+
+                var text = '  <div class="row text-card" data-rel="top_' + photoID + '">\n' +
+                    '                            <div class="col-xl-8">\n' +
+                    '                                <div class="title">' + name + '</div>\n' +
+                    // '                                <div class="description">' + info.description + '</div>\n' +
+                    '                                <p>' + datetime + '</p>\n' +
+                    '                                <div class="progress">\n' +
+                    '                                    <div class="progress-bar progress-bar-striped progress-bar-animated nice" role="progressbar" style="width: ' + quality + '%" aria-valuenow="' + quality + '" aria-valuemin="0" aria-valuemax="100">Nice ' + quality + '</div>\n' +
+                    '                                </div>\n' +
+                    '                            </div>\n' +
+                    '                            <div class="col-xl-4">\n' + image;
+                /*FOR QUEEN*/
+                if (count == 1)
+                        text += '<img src="dist/image/queen.png" class="crown-right">';
+
+                    text +='                            </div>\n' +
+                    '                        </div>';
+
+                $(config.area + "-2").append(text);
+            }
+
+        }
+
+        return;
+    }
+
     /*ACK*/
+    //messageType=="MESSAGE_TYPE_ALERT"
     var confirm = function (data) {
+
+        // return;
+
+        if (config.ack == false) return;
+
+        // return;
+        console.log("ACK Message: " + config.ack);
+
 
         var ackid = new Array();
 
@@ -235,11 +356,14 @@ var FaceID = function () {
     };
 
     /*DEFINE*/
+    /*PUBLIC METHOD*/
     this.subinit = subinit;
     this.getsub = getsub;
     this.analyze = analyze;
     this.setflag = setFlag;
 
-    this.flag = flag;
+    this.getMonitor = getMonitor;
+
+    /*PRIVATE VAR*/
     this.config = config;
 }

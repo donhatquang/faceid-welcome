@@ -40,7 +40,7 @@
 		public function get_insert_id($id_name,$tbl_name){
 			global $con;
 			$result = mysqli_query($con,"select $id_name from $tbl_name order by $id_name desc limit 0,1");
-			$rows = mysqli_fetch_array($reulst);
+			$rows = mysqli_fetch_array($result);
 			return $rows;
 		}
 	}

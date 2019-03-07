@@ -13,7 +13,7 @@ $url = $_SERVER['REQUEST_URI'];
 //header("Refresh: 5; URL=$url");
 
 $FaceID = new FaceID();
-$threshold = 70;
+//$threshold = 70;
 $param = array(
 
     "maxWaitTimeSeconds" => 2,
@@ -57,7 +57,8 @@ foreach ($sub as $key => $item) {
             "score" => $person->score,
             "capture" => $person->capturedPhotos->face,
             "photoID" => $person->extraTopk[0]->photoId,
-            "capturedTime" => $person->capturedTime
+            "capturedTime" => $person->capturedTime,
+            "messageType" => $person->messageType
 
         );
 
@@ -70,5 +71,5 @@ foreach ($sub as $key => $item) {
 
     }
 }
-
+//var_dump($data);
 echo json_encode($data);
