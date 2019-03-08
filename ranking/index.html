@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>CodePen - Ranking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src='/dist/js/FaceID.js'></script>
+    <script language="JavaScript">
+        var getMonitor, myface, subscribe_config;
+        $(function () {
+
+            myface = new FaceID();
+
+            myface.initMonitor = function(data) {
+
+                var count = 0;
+
+                for (i in data) {
+
+                    if (count == 5) return;
+
+                    var person = data[i];
+                    var photoID = person.photoID;
+                    var name = person.name;
+                    var quality = Math.round(person.quality*0.8);
+                    var datetime = person.datetime;
+                    // var capture = person.capture;
+
+                    /*GET analyze*/
+                    var analyze = person.face_analyze;
+                    var gender = analyze.gender;
+                    var age = analyze.age;
+
+
+                    /*IMAGE*/
+                    var image = config.host + '/photos/' + photoID + '/data';
+
+                    if (gender == "FEMALE") {
+
+                        count++;
+
+                        var text = '  <div class="col-xl-3">\n' +
+                           '                                    <div class="row">\n' +
+                           '                                        <div class="col-xl-6">\n' +
+                           '                                            <div class="avatar">\n' +
+                           '                                                <div class="top-5-pic">\n' +
+                           '                                                    <img src="'+image+'" class="top5-ava">\n' +
+                           '                                                </div>\n' +
+                           '                                            </div>\n' +
+                           '                                        </div>\n' +
+                           '                                        <div class="col-xl-6">\n' +
+                           '                                            <div class="name">\n' +
+                           '                                                <h4>'+name+'</h4>\n' +
+                           '                                            </div>\n' +
+                           '                                            <div class="surveys"><h5>'+'</h5></div>\n' +
+                           '                                            <div class="age"><h5>Tuổi: '+age+'</h5></div>\n' +
+                           '                                            <div class="progress">\n' +
+                           '                                                <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width:'+quality+'%">Nice '+quality+'%</div>\n' +
+                           '                                            </div>\n' +
+                           '                                        </div>\n' +
+                           '                                    </div>\n' +
+                           '                                </div>';
+
+                        /*FOR QUEEN*/
+                        if (count == 1) {
+
+                        }
+                        else {
+                            console.log(text);
+                            $("#top5").append(text);
+                        }
+
+                    }
+
+                }
+
+                return;
+            }
+
+            myface.getMonitor();
+            getMonitor = setInterval(myface.getMonitor, 10000);
+        })
+    </script>
+
+</head>
+
+    <body translate="no">
+        <div class="container-fluid">
+            <div class="confetti">
+                <div class="rank">
+                    <div class="winner">
+                        <div class="container">
+                            <div class="row" id="winner">
+
+                                <div class="col-xl-3">
+
+
+                                    <div class="avatar">
+                                        <div class="pic">
+                                            <img src="assets/image/image (2).png" class="win-ava">
+                                            <img src="assets/image/VM-02.png" class="queen">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3">
+                                    <div class="name">
+                                        <h2>Đinh Thị Linh</h2>
+                                    </div>
+                                    <!--<div class="surveys"><h4>Tinhvan Lab</h4></div>-->
+                                    <div class="age"><h4>Tuổi: 21</h4></div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width:30%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="top-performers">
+                        <div class="container">
+                            <div class="row" id="top5">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

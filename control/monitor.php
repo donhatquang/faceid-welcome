@@ -19,6 +19,7 @@ $FaceID = new FaceID();
 $FaceID->setCon($con);
 
 $data = $FaceID->getHighQuality();
+//$data = $FaceID->getHighest();
 
 echo json_encode($data);
 //var_dump($data);

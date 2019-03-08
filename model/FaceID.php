@@ -207,10 +207,37 @@ class FaceID
     /**
      * @return mixed
      */
+
+    public function getHighest()  {
+
+        $top = array("Lê Thảo Nguyên", "Cao Bình Dương",  "Dương Thị Nhung",  "Dương Thanh Phương", "Nguyễn Hải Yến", "Trịnh Thị Yến Nhi", "Nguyễn Trang Nhung", "Phí Thị Thu Hoài");
+//        $top = array();
+
+        $sql = "SELECT idPerson,unicodeName,description,position FROM `person`";
+        $query = $this->con->query($sql);
+
+        $result = array();
+
+        while ($row = $query->fetch_object()) {
+
+            if (array_search($row->unicodeName, $top)) {
+
+                $result[] = $row;
+            }
+
+
+        }
+
+        return $result;
+
+    }
+
     public function getHighQuality()
     {
 
-        $sql = "SELECT * FROM `monitor` ORDER BY quality DESC LIMIT 30";
+
+
+        $sql = "SELECT * FROM `monitor` WHERE `face_analyze` LIKE '%FEMALE%'  ORDER BY quality DESC ";
         $query = $this->con->query($sql);
 
         $result = array();

@@ -3,7 +3,7 @@
 $param = array(
 
     "wait" => 5,
-    "limit" => 10
+    "limit" => 50
 );
 
 if (isset($_GET["wait"])) {
@@ -21,7 +21,7 @@ if (isset($_GET["subscribe"])) {
     $param["subscribe"] = $_GET["subscribe"];
 } else {
 
-    $param["subscribe"] = "cong chinh";
+    $param["subscribe"] = "main";
 }
 $param_str = json_encode($param);
 ?>

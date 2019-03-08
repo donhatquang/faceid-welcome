@@ -1,10 +1,13 @@
 <?php
-	$hostname = "localhost";
-//$hostname = "192.168.51.4";
+
+
+/*$hostname = "localhost";
 $user = "root";
-$password = "root";
-/*$user = "tvlab";
-$password = "TinhvanTVLAB20!*";*/
+$password = "root";*/
+
+$hostname = "192.168.51.4";
+$user = "tvlab";
+$password = "TinhvanTVLAB20!*";
 
 $database = "faceid";
 

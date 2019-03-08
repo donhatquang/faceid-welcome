@@ -1,7 +1,7 @@
 var FaceID = function () {
 
     var config = {
-        max_timeout: 1000 * 1,
+        max_timeout: 3000 * 1,
         ack_max_timeout: 1000 * 1,
         host: "http://192.168.51.12:8080/v4",
         area: '.faceid-list',
@@ -16,7 +16,7 @@ var FaceID = function () {
     var subinit = function (data) {
 
         /*REMOVE*/
-        $(config.area + "-1").html("");
+        $(config.area).html("");
 
         // console.log(data);
         for (i in data) {
@@ -27,7 +27,7 @@ var FaceID = function () {
                 var area = config.area + "-1";
             }
             else if (i >= 5) {
-                area = config.area + "-1";
+                area = config.area + "-2";
             }
 
             //-------------
@@ -38,6 +38,7 @@ var FaceID = function () {
             var photoID = person.photoID;
             var capture = person.capture;
             var score = Math.round(person.score);
+            /*THRESH-HOLD*/
 
             var name = info.name;
             var date = new Date(person.capturedTime);
@@ -61,7 +62,7 @@ var FaceID = function () {
                 '                            <div class="col-xl-8">\n' +
                 '                                <div class="title">' + name + '</div>\n' +
                 '                                <div class="description">' + info.description + '</div>\n' +
-                '                                <p>' + datetime  + '</p>\n' + //+ ' (Score: ' + score
+                '                                <p>' + datetime + '</p>\n' + //+ ' (Score: ' + score
                 '                                <div class="progress">\n' +
                 '                                    <div class="progress-bar progress-bar-striped progress-bar-animated nice" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>\n' +
                 '                                </div>\n' +
@@ -163,7 +164,7 @@ var FaceID = function () {
             var image_gender = $("<img class=\"\">").attr({
 
                 "class": "gender-left",
-                "src": 'dist/image/'+gender.toLocaleLowerCase()+".png"
+                "src": 'dist/image/' + gender.toLocaleLowerCase() + ".png"
 
             }).prop('outerHTML');
 
@@ -208,20 +209,20 @@ var FaceID = function () {
     /*REMOVE DUPLICATE */
     var removeDuplicates = function (json_all) {
 
-        var arr_id = [],
-            arr_name = [],
+        var photoIDs = [],
+            // arr_name = [],
             collection = [];
 
         for (index in json_all) {
 
             var person = json_all[index];
-            var info = person.tags;
+            var photoID = person.photoID;
+            // var info = person.tags;
 
             /*CHECK DUPLICATE*/
-            if ($.inArray(info.idPerson, arr_id) == -1 && $.inArray(info.name, arr_name) == -1) {
+            if ($.inArray(photoID, photoIDs) == -1) {
 
-                arr_id.push(info.idPerson);
-                arr_name.push(info.name);
+                photoIDs.push(photoID);
 
                 collection.push(person);
 
@@ -235,7 +236,7 @@ var FaceID = function () {
     var getMonitor = function () {
 
 
-        var url = 'control/monitor.php';
+        var url = '/control/monitor.php';
 
         var param = {
 
@@ -266,9 +267,9 @@ var FaceID = function () {
             var person = data[i];
             var photoID = person.photoID;
             var name = person.name;
-            var quality = Math.round(person.quality*0.8);
+            var quality = Math.round(person.quality * 0.8);
             var datetime = person.datetime;
-            // var capture = person.capture;
+            var capture = person.capture;
 
             /*GET analyze*/
             var analyze = person.face_analyze;
@@ -277,7 +278,7 @@ var FaceID = function () {
 
             /*IMAGE*/
             var image = $("<img class=\"\">").attr({
-                "src": config.host + '/photos/' + photoID + '/data',
+                "src": config.host + '/photos/' + capture + '/data',
                 "class": "people"
 
             }).prop('outerHTML');
@@ -299,9 +300,9 @@ var FaceID = function () {
                     '                            <div class="col-xl-4">\n' + image;
                 /*FOR QUEEN*/
                 if (count == 1)
-                        text += '<img src="dist/image/queen.png" class="crown-right">';
+                    text += '<img src="dist/image/queen.png" class="crown-right">';
 
-                    text +='                            </div>\n' +
+                text += '                            </div>\n' +
                     '                        </div>';
 
                 $(config.area + "-2").append(text);
@@ -316,7 +317,7 @@ var FaceID = function () {
     //messageType=="MESSAGE_TYPE_ALERT"
     var confirm = function (data) {
 
-        // return;
+
 
         if (config.ack == false) return;
 
@@ -363,6 +364,7 @@ var FaceID = function () {
     this.setflag = setFlag;
 
     this.getMonitor = getMonitor;
+    this.initMonitor = initMonitor;
 
     /*PRIVATE VAR*/
     this.config = config;
