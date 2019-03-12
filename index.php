@@ -36,7 +36,7 @@ $param_str = json_encode($param);
     <script src="dist/assets/vendor/jquery/jquery.min.js"></script>
     <script src="dist/assets/vendor/popper/popper.min.js"></script>
     <script src="dist/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="dist/assets/css/style.css">
+    <link rel="stylesheet" href="dist/assets/css/style.css?<?php echo rand(); ?>">
 
     <script language="JavaScript">
 
@@ -46,7 +46,9 @@ $param_str = json_encode($param);
 
     <script src="dist/js/jquery-3.2.1.min.js"></script>
     <!--<script src='dist/js/responsivevoice.js'></script>-->
+    <script src='dist/js/tools.js?<?php echo rand(); ?>'></script>
     <script src='dist/js/FaceID.js?<?php echo rand(); ?>'></script>
+
     <script src='dist/js/main.js?<?php echo rand(); ?>'></script>
 
 </head>

@@ -13,7 +13,19 @@ $url = $_SERVER['REQUEST_URI'];
 //header("Refresh: 5; URL=$url");
 
 $FaceID = new FaceID();
-//$threshold = 70;
+
+$threshold = 75;
+
+if (isset($_GET["subscribe"])) {
+
+    $subscribe = $_GET["subscribe"];
+} else {
+
+    return '{
+        error: "no subscribe" 
+    }';
+}
+
 $param = array(
 
     "maxWaitTimeSeconds" => 2,
@@ -30,13 +42,9 @@ if (isset($_GET["limit"])) {
     $param["maxMessages"] = $_GET["limit"];
 }
 
-if (isset($_GET["subscribe"])) {
+$threshold = isset($_GET["threshold"]) ?  $_GET["threshold"] : $threshold;
 
-    $subscribe = $_GET["subscribe"];
-} else {
 
-    $subscribe = "cong chinh";
-}
 
 $sub = $FaceID->getsub($subscribe, $param);
 $data = array();
@@ -62,6 +70,7 @@ foreach ($sub as $key => $item) {
 
         );
 
+        /*CHECK THRESH HOLD*/
         $data[] = $person;
 
 //        echo '<h1>' . $person["score"] . '</h1>';

@@ -41,7 +41,7 @@ var FaceID = function () {
             /*THRESH-HOLD*/
 
             var name = info.name;
-            var date = new Date(person.capturedTime);
+            var date = tools.formatDate(new Date(person.capturedTime));
             // var idPerson = info.idPerson;
 
             /*IMAGE*/
@@ -53,8 +53,6 @@ var FaceID = function () {
             }).prop('outerHTML');
 
 
-            var datetime = date.getDate() + "/" + date.getMonth() + "-" + date.getHours() + ":" + date.getMinutes();
-
             /*CHECK EXIST*/
             // if ($("div[data-rel='"+photoID+"']").length == 0) {}
 
@@ -62,7 +60,7 @@ var FaceID = function () {
                 '                            <div class="col-xl-8">\n' +
                 '                                <div class="title">' + name + '</div>\n' +
                 '                                <div class="description">' + info.description + '</div>\n' +
-                '                                <p>' + datetime + '</p>\n' + //+ ' (Score: ' + score
+                '                                <p>' + date + '</p>\n' + //+ ' (Score: ' + score
                 '                                <div class="progress">\n' +
                 '                                    <div class="progress-bar progress-bar-striped progress-bar-animated nice" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>\n' +
                 '                                </div>\n' +
@@ -84,11 +82,6 @@ var FaceID = function () {
         return;
     };
 
-    /*GET SUBSCRIBE*/
-    var setFlag = function (status) {
-
-        config.flag = status;
-    };
 
     var getsub = function () {
 
@@ -100,10 +93,13 @@ var FaceID = function () {
             //--------------
 
             /*REMOVE DUPLICATE*/
-            var new_data = removeDuplicates(data);
+            var new_data = tools.removeDuplicates(data);
 
             console.log("Flag: " + flag);
-            if (flag == true) {
+
+            //$(".people").length == 0
+
+            if (flag == true || (flag == false && data.length != 0)) {
 
                 /*INIT*/
                 subinit(new_data);
@@ -156,6 +152,12 @@ var FaceID = function () {
 
             var data = data.faces[0];
             var attr = data.attributes;
+            var pose = attr.pose;
+
+            /*EYES*/
+            var eyeStatus = attr.eyeStatus;
+            var left_eye = checkEye(eyeStatus.leftEye);
+            var right_eye = checkEye(eyeStatus.rightEye);
 
             var age = Math.round(attr.age);
             var gender = attr.gender;
@@ -168,155 +170,74 @@ var FaceID = function () {
 
             }).prop('outerHTML');
 
-
             obj.find(".title").append(" (Age: " + age + ")");
             obj.find(".progress-bar").css({width: quality}).html(quality);
 
-            obj.find(".people").after(image_gender);
+/*,' + left_eye.status +*/
+            obj.find(".description").append('<p>' +
+                'Mắt trái: ' + left_eye.glass +
+                ' - Mắt phải: ' + right_eye.glass +
+
+
+                '</p>');
+
+            /*ADD GENDER*/ /*ADD CUBE*/
+            obj.find(".people").after(image_gender).after(draw_cube(pose));
+
+
+
+
+            /*ADD EYE STATUS*/
+            // "NO_GLASSES_EYE_OPEN"
 
             console.log(name);
-            // console.log();
-            // console.log("blur:"+ attr.blurriness);
-
-            /*
-           "attributes": {
-"age": 27.864948,
-"gender": "MALE",
-"minority": "NO",
-"blurriness": 0.0022596244,
-"pose": {
-"yaw": -0.073621795,
-"pitch": 0.059973117,
-"roll": 0.029823324
-},
-"mouthStatus": "MOUTH_OPEN",
-"eyeStatus": {
-"leftEye": "NO_GLASSES_EYE_OPEN",
-"rightEye": "NO_GLASSES_EYE_OPEN"
-},
-"quality": 0.9417827
-},
-            * */
-
             console.log(info);
         })
 
         return;
     };
 
+    var checkEye = function (eyeStatus) {
+
+        var eye = {
+
+            glass: "không kính",
+            status: "mở mắt"
+        };
+
+        if (eyeStatus.indexOf("NO_") != -1) eye.glass = "đeo kính";
+        if (eyeStatus.indexOf("_OPEN") == -1) eye.status = "nhắm mắt";
+
+        return eye;
+    }
+
+    /*DRAW CUBE*/
+    var draw_cube = function (pose) {
+
+        var yaw = Math.round(tools.radians_to_degrees(pose.yaw))*(-1), //2
+            roll = Math.round(tools.radians_to_degrees(pose.roll))*(-1), //3
+            pitch = Math.round(tools.radians_to_degrees(pose.pitch)); //1
+
+
+        var text = '<div class="cube" style="transform: rotateX('+pitch+'deg) rotateY('+yaw+'deg) rotateZ('+roll+'deg);">\n' +
+            '    <div class="cube-side cube-front"></div>\n' +
+            '    <div class="cube-side cube-back"></div>\n' +
+            '    <div class="cube-side cube-left"></div>\n' +
+            '    <div class="cube-side cube-right"></div>\n' +
+            '    <div class="cube-side cube-top"></div>\n' +
+            '    <div class="cube-side cube-bottom"></div>\n' +
+            '</div>';
+
+        return text;
+    }
+
     // var analyze_init
 
-    /*REMOVE DUPLICATE */
-    var removeDuplicates = function (json_all) {
 
-        var photoIDs = [],
-            // arr_name = [],
-            collection = [];
-
-        for (index in json_all) {
-
-            var person = json_all[index];
-            var photoID = person.photoID;
-            // var info = person.tags;
-
-            /*CHECK DUPLICATE*/
-            if ($.inArray(photoID, photoIDs) == -1) {
-
-                photoIDs.push(photoID);
-
-                collection.push(person);
-
-                // console.log(arr);
-            }
-        }
-        ;
-        return collection;
-    };
-
-    var getMonitor = function () {
-
-
-        var url = '/control/monitor.php';
-
-        var param = {
-
-            action: "getHighQuality"
-        }
-
-        $.getJSON(url, param, function (data) {
-
-            console.log("Top 5:");
-            console.log(data);
-
-            initMonitor(data);
-        });
-
-        return;
-    }
-
-    var initMonitor = function (data) {
-
-        $(config.area + "-2").html("");
-
-        var count = 0;
-
-        for (i in data) {
-
-            if (count == 5) return;
-
-            var person = data[i];
-            var photoID = person.photoID;
-            var name = person.name;
-            var quality = Math.round(person.quality * 0.8);
-            var datetime = person.datetime;
-            var capture = person.capture;
-
-            /*GET analyze*/
-            var analyze = person.face_analyze;
-            var gender = analyze.gender;
-
-
-            /*IMAGE*/
-            var image = $("<img class=\"\">").attr({
-                "src": config.host + '/photos/' + capture + '/data',
-                "class": "people"
-
-            }).prop('outerHTML');
-
-
-            if (gender == "FEMALE") {
-
-                count++;
-
-                var text = '  <div class="row text-card" data-rel="top_' + photoID + '">\n' +
-                    '                            <div class="col-xl-8">\n' +
-                    '                                <div class="title">' + name + '</div>\n' +
-                    // '                                <div class="description">' + info.description + '</div>\n' +
-                    '                                <p>' + datetime + '</p>\n' +
-                    '                                <div class="progress">\n' +
-                    '                                    <div class="progress-bar progress-bar-striped progress-bar-animated nice" role="progressbar" style="width: ' + quality + '%" aria-valuenow="' + quality + '" aria-valuemin="0" aria-valuemax="100">Nice ' + quality + '</div>\n' +
-                    '                                </div>\n' +
-                    '                            </div>\n' +
-                    '                            <div class="col-xl-4">\n' + image;
-                /*FOR QUEEN*/
-                if (count == 1)
-                    text += '<img src="dist/image/queen.png" class="crown-right">';
-
-                text += '                            </div>\n' +
-                    '                        </div>';
-
-                $(config.area + "-2").append(text);
-            }
-
-        }
-
-        return;
-    }
 
     /*ACK*/
     //messageType=="MESSAGE_TYPE_ALERT"
     var confirm = function (data) {
-
 
 
         if (config.ack == false) return;
@@ -330,7 +251,6 @@ var FaceID = function () {
         for (i in data) {
 
             ackid.push(data[i].ackID);
-
         }
 
         /*post*/
@@ -361,10 +281,6 @@ var FaceID = function () {
     this.subinit = subinit;
     this.getsub = getsub;
     this.analyze = analyze;
-    this.setflag = setFlag;
-
-    this.getMonitor = getMonitor;
-    this.initMonitor = initMonitor;
 
     /*PRIVATE VAR*/
     this.config = config;
