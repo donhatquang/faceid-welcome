@@ -205,8 +205,8 @@ var FaceID = function () {
             status: "mở mắt"
         };
 
-        if (eyeStatus.indexOf("NO_") != -1) eye.glass = "đeo kính";
-        if (eyeStatus.indexOf("_OPEN") == -1) eye.status = "nhắm mắt";
+        if (eyeStatus.indexOf("NORMAL_GLASSES") != -1) eye.glass = "đeo kính";
+        if (eyeStatus.indexOf("EYE_OPEN") == -1) eye.status = "nhắm mắt";
 
         return eye;
     }
