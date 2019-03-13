@@ -6,7 +6,9 @@ var FaceID = function () {
         host: "http://192.168.51.12:8080/v4",
         area: '.faceid-list',
         flag: true, /*true is init ready*/
-        ack: true
+        ack: true,
+
+        realtime: true
     };
     var subscribe = subscribe_config;
 
@@ -42,6 +44,7 @@ var FaceID = function () {
 
             var name = info.name;
             var date = tools.formatDate(new Date(person.capturedTime));
+
             // var idPerson = info.idPerson;
 
             /*IMAGE*/
@@ -60,7 +63,7 @@ var FaceID = function () {
                 '                            <div class="col-xl-8">\n' +
                 '                                <div class="title">' + name + '</div>\n' +
                 '                                <div class="description">' + info.description + '</div>\n' +
-                '                                <p>' + date + '</p>\n' + //+ ' (Score: ' + score
+                '                                <p>' + date.fulltime + '</p>\n' + //+ ' (Score: ' + score
                 '                                <div class="progress">\n' +
                 '                                    <div class="progress-bar progress-bar-striped progress-bar-animated nice" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>\n' +
                 '                                </div>\n' +
@@ -73,15 +76,34 @@ var FaceID = function () {
                 '                            </div>\n' +
                 '                        </div>';
 
-            $(area).append(text);
+            /*INIT*/
+            var raw_time = date.raw_time;
+            var now = tools.formatDate(new Date());
+
+            // console.log(date.time + " | " + now.time);
+            // console.log(raw_time);
+            // console.log(date.time);
+
+            var diff = tools.time_diff(raw_time,now.raw_time);
+            console.log("Duration: " + diff.hour);
+
+            if (config.realtime) {
+
+                if (diff.hour <= 1) $(area).append(text);
+                else console.log("History: " + name + " - " + diff.duration);
+            }
+            else {
+
+                $(area).append(text);
+            }
+
 
             /*ANALYZE*/
-            analyze(person);
+            myanalyze.analyze(person);
 
         }
         return;
     };
-
 
     var getsub = function () {
 
@@ -98,8 +120,9 @@ var FaceID = function () {
             console.log("Flag: " + flag);
 
             //$(".people").length == 0
+            //data.length != 0
 
-            if (flag == true || (flag == false && data.length != 0)) {
+            if (flag == true || (flag == false && $(".people").length == 0)) {
 
                 /*INIT*/
                 subinit(new_data);
@@ -120,120 +143,6 @@ var FaceID = function () {
         return;
     };
 
-    /*ANALYZE*/
-    var analyze = function (person) {
-
-        // return;
-
-        // photoID, name, capture,
-
-        var url = 'control/analyze.php';
-        var info = person.tags;
-
-        // var idPerson = info.idPerson;
-        var name = info.name;
-
-        var photoID = person.photoID;
-        var capture = person.capture;
-
-        var param = {
-
-            photoID: photoID,
-            name: name,
-            capture: capture,
-
-        }
-
-        /**/
-        var obj = $("div[data-rel='" + photoID + "']");
-
-        $.getJSON(url, param, function (data) {
-
-
-            var data = data.faces[0];
-            var attr = data.attributes;
-            var pose = attr.pose;
-
-            /*EYES*/
-            var eyeStatus = attr.eyeStatus;
-            var left_eye = checkEye(eyeStatus.leftEye);
-            var right_eye = checkEye(eyeStatus.rightEye);
-
-            var age = Math.round(attr.age);
-            var gender = attr.gender;
-            var quality = Math.round(attr.quality * 100 * 0.8) + "%";
-
-            var image_gender = $("<img class=\"\">").attr({
-
-                "class": "gender-left",
-                "src": 'dist/image/' + gender.toLocaleLowerCase() + ".png"
-
-            }).prop('outerHTML');
-
-            obj.find(".title").append(" (Age: " + age + ")");
-            obj.find(".progress-bar").css({width: quality}).html(quality);
-
-/*,' + left_eye.status +*/
-            obj.find(".description").append('<p>' +
-                'Mắt trái: ' + left_eye.glass +
-                ' - Mắt phải: ' + right_eye.glass +
-
-
-                '</p>');
-
-            /*ADD GENDER*/ /*ADD CUBE*/
-            obj.find(".people").after(image_gender).after(draw_cube(pose));
-
-
-
-
-            /*ADD EYE STATUS*/
-            // "NO_GLASSES_EYE_OPEN"
-
-            console.log(name);
-            console.log(info);
-        })
-
-        return;
-    };
-
-    var checkEye = function (eyeStatus) {
-
-        var eye = {
-
-            glass: "không kính",
-            status: "mở mắt"
-        };
-
-        if (eyeStatus.indexOf("NORMAL_GLASSES") != -1) eye.glass = "đeo kính";
-        if (eyeStatus.indexOf("EYE_OPEN") == -1) eye.status = "nhắm mắt";
-
-        return eye;
-    }
-
-    /*DRAW CUBE*/
-    var draw_cube = function (pose) {
-
-        var yaw = Math.round(tools.radians_to_degrees(pose.yaw))*(-1), //2
-            roll = Math.round(tools.radians_to_degrees(pose.roll))*(-1), //3
-            pitch = Math.round(tools.radians_to_degrees(pose.pitch)); //1
-
-
-        var text = '<div class="cube" style="transform: rotateX('+pitch+'deg) rotateY('+yaw+'deg) rotateZ('+roll+'deg);">\n' +
-            '    <div class="cube-side cube-front"></div>\n' +
-            '    <div class="cube-side cube-back"></div>\n' +
-            '    <div class="cube-side cube-left"></div>\n' +
-            '    <div class="cube-side cube-right"></div>\n' +
-            '    <div class="cube-side cube-top"></div>\n' +
-            '    <div class="cube-side cube-bottom"></div>\n' +
-            '</div>';
-
-        return text;
-    }
-
-    // var analyze_init
-
-
 
     /*ACK*/
     //messageType=="MESSAGE_TYPE_ALERT"
@@ -243,7 +152,7 @@ var FaceID = function () {
         if (config.ack == false) return;
 
         // return;
-        console.log("ACK Message: " + config.ack);
+        // console.log("ACK Message: " + config.ack);
 
 
         var ackid = new Array();
@@ -263,11 +172,12 @@ var FaceID = function () {
 
         var ack_str = JSON.stringify(ack_obj);
 
-        console.log(ack_str);
+        // console.log(ack_str);
 
         /*POST ACK*/
         $.post(url, {"ackid": ack_str}, function (data) {
 
+            console.log("ACK successful! ");
             console.log(data);
         });
 
@@ -278,9 +188,7 @@ var FaceID = function () {
 
     /*DEFINE*/
     /*PUBLIC METHOD*/
-    this.subinit = subinit;
     this.getsub = getsub;
-    this.analyze = analyze;
 
     /*PRIVATE VAR*/
     this.config = config;

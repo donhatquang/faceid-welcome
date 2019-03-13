@@ -47,6 +47,7 @@ $param_str = json_encode($param);
     <script src="dist/js/jquery-3.2.1.min.js"></script>
     <!--<script src='dist/js/responsivevoice.js'></script>-->
     <script src='dist/js/tools.js?<?php echo rand(); ?>'></script>
+    <script src='dist/js/analyze.js?<?php echo rand(); ?>'></script>
     <script src='dist/js/FaceID.js?<?php echo rand(); ?>'></script>
 
     <script src='dist/js/main.js?<?php echo rand(); ?>'></script>
