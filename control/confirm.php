@@ -16,7 +16,7 @@ if (isset($_GET["subscribe"])) {
     $subscribe = $_GET["subscribe"];
 } else {
 
-    $subscribe = "cong chinh";
+    $subscribe = "main";
 }
 
 $ackID;

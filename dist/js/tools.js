@@ -5,11 +5,6 @@ var Tools = function () {
         var hours = date.getHours();
         var minutes = date.getMinutes();
 
-        var raw_time = {
-            hour: hours,
-            minute: minutes
-        };
-
         var ampm = hours >= 12 ? 'pm' : 'am';
         hours = hours % 12;
         hours = hours ? hours : 12; // the hour '0' should be '12'
@@ -19,26 +14,24 @@ var Tools = function () {
         return {
             fulltime: date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime,
             time: strTime,
-            raw_time: raw_time
-
         }
 
     }
 
     function time_diff(start, end) {
 
-        var startDate = new Date(0, 0, 0, start.hour, start.minute, 0);
-        var endDate = new Date(0, 0, 0, end.hour, end.minute, 0);
-        var diff = endDate.getTime() - startDate.getTime();
-        var hours = Math.floor(diff / 1000 / 60 / 60);
-        diff -= hours * 1000 * 60 * 60;
-        var minutes = Math.floor(diff / 1000 / 60);
+        var end = end || new Date();
+        var timeDiff = Math.abs(end.getTime() - start.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        var diffHours = (timeDiff / (1000 * 3600)).toFixed(2);
+        var minute = Math.round(timeDiff / (1000 * 60),2);
 
         return {
-
-            duration: (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes,
-            hour: hours
+            days: diffDays,
+            hours: diffHours,
+            minute: minute
         }
+
     }
 
     /*REMOVE DUPLICATE */

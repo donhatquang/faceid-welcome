@@ -43,7 +43,7 @@ var FaceID = function () {
             /*THRESH-HOLD*/
 
             var name = info.name;
-            var date = tools.formatDate(new Date(person.capturedTime));
+            var capturedTime = new Date(person.capturedTime);
 
             // var idPerson = info.idPerson;
 
@@ -63,7 +63,7 @@ var FaceID = function () {
                 '                            <div class="col-xl-8">\n' +
                 '                                <div class="title">' + name + '</div>\n' +
                 '                                <div class="description">' + info.description + '</div>\n' +
-                '                                <p>' + date.fulltime + '</p>\n' + //+ ' (Score: ' + score
+                '                                <p>' + tools.formatDate(capturedTime).fulltime + '</p>\n' + //+ ' (Score: ' + score
                 '                                <div class="progress">\n' +
                 '                                    <div class="progress-bar progress-bar-striped progress-bar-animated nice" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>\n' +
                 '                                </div>\n' +
@@ -77,20 +77,22 @@ var FaceID = function () {
                 '                        </div>';
 
             /*INIT*/
-            var raw_time = date.raw_time;
-            var now = tools.formatDate(new Date());
 
-            // console.log(date.time + " | " + now.time);
-            // console.log(raw_time);
-            // console.log(date.time);
+            var diff = tools.time_diff(capturedTime);
 
-            var diff = tools.time_diff(raw_time,now.raw_time);
-            console.log("Duration: " + diff.hour);
-
+            /*REAL TIME DISPLAY*/
             if (config.realtime) {
 
-                if (diff.hour <= 1) $(area).append(text);
-                else console.log("History: " + name + " - " + diff.duration);
+                if (diff.minute <= 65) {
+
+                    console.log("Duration: ");
+                    console.log(diff);
+
+                    $(area).append(text);
+                }
+
+                else console.log("History: " + name + " - " + tools.formatDate(capturedTime).fulltime +
+                    " - Minute: " + diff.minute + " Ago");
             }
             else {
 

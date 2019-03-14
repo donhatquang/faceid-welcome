@@ -11,7 +11,8 @@ class FaceID
 {
     private $host = "http://192.168.51.12:8080/v4";
     private $con;
-
+    private $photo_album;
+    private $http;
     /**
      * @param mixed $con
      */
@@ -36,8 +37,7 @@ class FaceID
         $this->host = $host;
     }
 
-    private $photo_album;
-    private $http;
+
 
     public function __construct()
     {
@@ -150,109 +150,11 @@ class FaceID
 
     }
 
-    public function getPerson($photoID)
-    {
-
-        $sql = "SELECT * FROM `monitor` WHERE `photoID` LIKE '" . $photoID . "' ORDER BY quality DESC LIMIT 5";
-        $query = $this->con->query($sql);
-
-        if ($query->num_rows != 0) {
-
-            return $query->fetch_object();
-        }
-        else
-            return false;
-    }
-
-    public function addDB($photoID, $name, $capture, $face)
-    {
-
-        $quality = round($face->attributes->quality * 100, 2);
-        $face_analyze = json_encode($face->attributes);
-
-        $getPerson = $this->getPerson($photoID);
-
-        if ($getPerson == false) {
-
-            $sql = "INSERT INTO `monitor`(`photoID`, `name`, `face_analyze`,`quality`, `capture`)
-          VALUES ('" . $photoID . "', '" . $name . "', '" . $face_analyze . "', '" . $quality . "', '" . $capture . "')";
-
-        } else {
-
-             $sql = "UPDATE `monitor` SET 
-`quality` = '91.4',
-`face_analyze` = '" . $face_analyze . "',
-`quality` = '" . $quality . "',
-`capture` = '" . $capture . "'
- 
- WHERE `monitor`.`id` LIKE '" . $getPerson->id . "'";
-
-        }
-
-        $query = $this->con->query($sql);
-
-//        echo $this->con->error;
-//        echo $this->con->affected_rows;
-
-        //        echo mysqli_error($this->con);
-//        var_dump($query);
-
-//        echo "<hr/>";
-//        echo $id = $this->con->insert_id;
-
-        return;
-
-    }
 
     /**
      * @return mixed
      */
 
-    public function getHighest()  {
-
-        $top = array("Lê Thảo Nguyên", "Cao Bình Dương",  "Dương Thị Nhung",  "Dương Thanh Phương", "Nguyễn Hải Yến", "Trịnh Thị Yến Nhi", "Nguyễn Trang Nhung", "Phí Thị Thu Hoài");
-//        $top = array();
-
-        $sql = "SELECT idPerson,unicodeName,description,position FROM `person`";
-        $query = $this->con->query($sql);
-
-        $result = array();
-
-        while ($row = $query->fetch_object()) {
-
-            if (array_search($row->unicodeName, $top)) {
-
-                $result[] = $row;
-            }
-
-
-        }
-
-        return $result;
-
-    }
-
-    public function getHighQuality()
-    {
-
-
-
-        $sql = "SELECT * FROM `monitor` WHERE `face_analyze` LIKE '%FEMALE%'  ORDER BY quality DESC ";
-        $query = $this->con->query($sql);
-
-        $result = array();
-
-        if ($query->num_rows > 0) {
-
-            while ($row = $query->fetch_object()) {
-                $row->face_analyze = json_decode($row->face_analyze);
-                $result[] = $row;
-
-            }
-
-        }
-        return $result;
-    }
 
     public function confirm($subscribe, $ackids)
     {

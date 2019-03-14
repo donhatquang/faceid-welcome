@@ -8,12 +8,14 @@
 header("Content-type: application/json; charset:utf-8");
 
 require("../model/FaceID.php");
+require("../model/Monitor.php");
 require("../control/config.php");
 
 $FaceID = new FaceID();
+$Monitor = new Monitor($con);
 
 /*SET DB*/
-$FaceID->setCon($con);
+//$FaceID->setCon($con);
 
 if (isset($_GET["photoID"])) {
 
@@ -33,7 +35,7 @@ $data = $FaceID->analyze($photo_data);
 $faces = json_decode($data);
 //var_dump($photo_analyze);
 
-$FaceID->addDB($photoID, $name, $capture, $faces->faces[0]);
+$Monitor->addDB($photoID, $name, $capture, $faces->faces[0]);
 //var_dump($data);
 
 echo($data);

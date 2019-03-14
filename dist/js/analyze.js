@@ -1,6 +1,5 @@
 var FaceAnalyze = function () {
 
-
     /*ANALYZE*/
     var analyze = function (person) {
 
@@ -36,16 +35,11 @@ var FaceAnalyze = function () {
         return;
     };
 
-    var analyze_init = function (data,photoID) {
+    var analyze_init = function (data, photoID) {
 
         var data = data.faces[0];
         var attr = data.attributes;
         var pose = attr.pose;
-
-        /*EYES*/
-        var eyeStatus = attr.eyeStatus;
-        var left_eye = checkEye(eyeStatus.leftEye);
-        var right_eye = checkEye(eyeStatus.rightEye);
 
         var age = Math.round(attr.age);
         var gender = attr.gender;
@@ -58,19 +52,25 @@ var FaceAnalyze = function () {
 
         }).prop('outerHTML');
 
-
+        /*INIT*/
         var obj = $("div[data-rel='" + photoID + "']");
 
         obj.find(".title").append(" (Age: " + age + ")");
         obj.find(".progress-bar").css({width: quality}).html(quality);
 
-        /*,' + left_eye.status +*/
+        /*CHECK EYE*/
+        /*
+
+        var eyeStatus = attr.eyeStatus;
+
+        var left_eye = checkEye(eyeStatus.leftEye);
+        var right_eye = checkEye(eyeStatus.rightEye);
+
         obj.find(".description").append('<p>' +
             'Mắt trái: ' + left_eye.glass +
             ' - Mắt phải: ' + right_eye.glass +
-
             '</p>');
-
+*/
         /*ADD GENDER*/
         /*ADD CUBE*/
         obj.find(".people").after(image_gender).after(draw_cube(pose));
@@ -78,6 +78,7 @@ var FaceAnalyze = function () {
         return;
     }
 
+    /*CHECK EYE & GLASSES*/
     var checkEye = function (eyeStatus) {
 
         var eye = {
