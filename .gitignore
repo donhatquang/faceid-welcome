@@ -6,3 +6,5 @@
 \.idea/modules\.xml
 
 \.idea/workspace\.xml
+
+admin/assets/node_modules/
