@@ -42,8 +42,7 @@ if (isset($_GET["limit"])) {
     $param["maxMessages"] = $_GET["limit"];
 }
 
-$threshold = isset($_GET["threshold"]) ?  $_GET["threshold"] : $threshold;
-
+$threshold = isset($_GET["threshold"]) ? $_GET["threshold"] : $threshold;
 
 
 $sub = $FaceID->getsub($subscribe, $param);
@@ -52,9 +51,12 @@ $data = array();
 foreach ($sub as $key => $item) {
 
     $ackID = $item["ackId"];
-    $person = base64_decode($item["message"]["data"]);
 
+//    var_dump($item);
+
+    $person = base64_decode($item["message"]["data"]);
     $person = json_decode($person, false);
+
 //    var_dump($person);
 
     if ($person->messageType == "MESSAGE_TYPE_ALERT") {

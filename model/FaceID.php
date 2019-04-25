@@ -9,7 +9,7 @@ require("AipHttpClient.php");
 
 class FaceID
 {
-    private $host = "http://192.168.51.12:8080/v4";
+    private $host = "http://192.168.21.108:8080/v4";
     private $con;
     private $photo_album;
     private $http;
@@ -78,8 +78,8 @@ class FaceID
                 "description" => $person->description,
                 "country" => $person->country,
                 "gender" => $person->gender,
-                "birthday" => $person->birthday,
-                "idPerson" => $person->idPerson
+                "birthday" => $person->birthday
+
 
             )
         );

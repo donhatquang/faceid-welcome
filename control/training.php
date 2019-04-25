@@ -15,11 +15,12 @@ $data = json_decode($data, false);
 //echo count($data);
 //var_dump($data[0]);
 
-$photo_album = "4de9c961-9b3a-4b78-adcf-5b42fd2d9193";
+$photo_album = "3e47857f-7d30-318f-b297-82f24eb66924";
 
 foreach ($data as $key=>$person) {
 
     $FaceID = new FaceID();
+    $FaceID->setHost("http://192.168.21.108:8080/v4");
     $FaceID->setPhotoAlbum($photo_album);
 
     if ($key >= 1) {

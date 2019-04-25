@@ -11,7 +11,7 @@ require("AipHttpClient.php");
 class FaceQuery
 {
     private $http;
-    private $host = "http://192.168.51.12:8080/v4";
+    private $host = "http://192.168.21.108:8080/v4";
 
     public function __construct()
     {
