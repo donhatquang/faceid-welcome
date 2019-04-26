@@ -5,7 +5,7 @@
  * Date: 2/26/2019
  * Time: 5:08 PM
  */
-header("Content-type: application/json; charset:utf-8");
+//header("Content-type: application/json; charset:utf-8");
 
 require("../model/FaceID.php");
 require("../model/Monitor.php");
@@ -33,9 +33,12 @@ $photo_data = base64_encode(file_get_contents($host . '/photos/' . $photoID . '/
 
 $data = $FaceID->analyze($photo_data);
 $faces = json_decode($data);
-//var_dump($photo_analyze);
 
-$Monitor->addDB($photoID, $name, $capture, $faces->faces[0]);
+//var_dump($data);
+
+$id = $Monitor->addDB($photoID, $name, $capture, $faces->faces[0]);
+//var_dump($id);
+
 //var_dump($data);
 
 echo($data);

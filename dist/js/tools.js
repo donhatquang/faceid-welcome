@@ -29,7 +29,8 @@ var Tools = function () {
         return {
             days: diffDays,
             hours: diffHours,
-            minute: minute
+            minute: minute,
+            second: Math.round(timeDiff / 1000)
         }
 
     }

@@ -11,9 +11,9 @@ require("../model/FaceID.php");
 
 $FaceID = new FaceID();
 
-if (isset($_GET["subscribe"])) {
+if (isset($_POST["subscribe"])) {
 
-    $subscribe = $_GET["subscribe"];
+    $subscribe = $_POST["subscribe"];
 } else {
 
     $subscribe = "main";

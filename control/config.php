@@ -5,9 +5,13 @@
 $user = "root";
 $password = "root";*/
 
-$hostname = "192.168.51.4";
+/*$hostname = "192.168.51.4";
 $user = "tvlab";
-$password = "TinhvanTVLAB20!*";
+$password = "TinhvanTVLAB20!*";*/
+
+$hostname = "localhost";
+$user = "hiface";
+$password = "Tinhvan@123";
 
 $database = "faceid";
 
@@ -37,4 +41,3 @@ $con = connectdb($hostname, $user, $password, $database);
 //$con = mysqli_connect($hostname, $user, $password, $database);
 //set charset
 //mysqli_set_charset($con, "UTF8");
-?>

@@ -6,11 +6,13 @@ var FaceID = function () {
         host: "http://192.168.21.108:8080/v4",
         area: '.faceid-list',
         flag: true, /*true is init ready*/
-        ack: true,
 
-        realtime: false
+        ack: true,
+        realtime: true
     };
-    var subscribe = subscribe_config;
+    // var subscribe = subscribe_config;
+
+    var request_param = request_param_global;
 
     // var flag = false;
 
@@ -78,21 +80,32 @@ var FaceID = function () {
 
             /*INIT*/
 
-            var diff = tools.time_diff(capturedTime);
+            var timediff = tools.time_diff(capturedTime);
+
+            // console.log(diff);
 
             /*REAL TIME DISPLAY*/
             if (config.realtime) {
 
-                if (diff.minute <= 65) {
+                // console.log(timediff);
+
+                if (timediff.second <= 30) {
 
                     console.log("Duration: ");
-                    console.log(diff);
+                    console.log(timediff);
 
                     $(area).append(text);
+
+                    console.log("History: " + name + " - " + tools.formatDate(capturedTime).fulltime +
+                        " - Minute: " + timediff.minute + " - Second: " + timediff.second);
                 }
 
-                else console.log("History: " + name + " - " + tools.formatDate(capturedTime).fulltime +
-                    " - Minute: " + diff.minute + " Ago");
+                else {
+
+                    // console.log("History: " + name + " - " + tools.formatDate(capturedTime).fulltime + " - Minute: " + timediff.minute + " Ago");
+
+                }
+
             }
             else {
 
@@ -112,7 +125,7 @@ var FaceID = function () {
         var url = 'control/getsub.php';
         var flag = config.flag;
 
-        $.getJSON(url, subscribe, function (data) {
+        $.getJSON(url, request_param, function (data) {
 
             //--------------
 
@@ -170,6 +183,7 @@ var FaceID = function () {
         var ack_obj = {
 
             "ackIds": ackid
+
         }
 
         var ack_str = JSON.stringify(ack_obj);
@@ -177,7 +191,11 @@ var FaceID = function () {
         // console.log(ack_str);
 
         /*POST ACK*/
-        $.post(url, {"ackid": ack_str}, function (data) {
+        $.post(url, {
+
+            "ackid": ack_str,
+            "subscribe": request_param.subscribe
+        }, function (data) {
 
             console.log("ACK successful! ");
             console.log(data);

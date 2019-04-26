@@ -60,7 +60,7 @@ class Monitor
 
 //
 
-        $sql = "INSERT INTO `monitor`(`photoID`, `name`, `face_analyze`,`quality`, `capture`)
+        $sql = "INSERT INTO `monitor`(`photoID`, `name`, `face_analyze`,`quality`, `capture`, `cameraq`)
           VALUES ('" . $photoID . "', '" . $name . "', '" . $face_analyze . "', '" . $quality . "', '" . $capture . "')";
 
         /*

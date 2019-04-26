@@ -41,7 +41,7 @@ $param_str = json_encode($param);
     <script language="JavaScript">
 
 
-        var subscribe_config = <?php echo $param_str?>;
+        var request_param_global = <?php echo $param_str?>;
     </script>
 
     <script src="dist/js/jquery-3.2.1.min.js"></script>
