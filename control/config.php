@@ -5,13 +5,13 @@
 $user = "root";
 $password = "root";*/
 
-/*$hostname = "192.168.51.4";
+$hostname = "192.168.51.4";
 $user = "tvlab";
-$password = "TinhvanTVLAB20!*";*/
+$password = "TinhvanTVLAB20!*";
 
-$hostname = "localhost";
+/*$hostname = "localhost";
 $user = "hiface";
-$password = "Tinhvan@123";
+$password = "Tinhvan@123";*/
 
 $database = "faceid";
 

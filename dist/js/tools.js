@@ -21,10 +21,15 @@ var Tools = function () {
     function time_diff(start, end) {
 
         var end = end || new Date();
+
+
+        start = typeof start == "object" ? start : new Date(start);
+        end = typeof start == "object" ? end : new Date(end);
+
         var timeDiff = Math.abs(end.getTime() - start.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
         var diffHours = (timeDiff / (1000 * 3600)).toFixed(2);
-        var minute = Math.round(timeDiff / (1000 * 60),2);
+        var minute = Math.round(timeDiff / (1000 * 60), 2);
 
         return {
             days: diffDays,
@@ -49,16 +54,34 @@ var Tools = function () {
             // var info = person.tags;
 
             /*CHECK DUPLICATE*/
-            if ($.inArray(photoID, photoIDs) == -1) {
+            var index = $.inArray(photoID, photoIDs);
+
+            if (index == -1) {
 
                 photoIDs.push(photoID);
 
                 collection.push(person);
+            }
 
-                // console.log(arr);
+            /*COMPARE TIME IF EXIST IN TEMP COLLECTION*/
+            else {
+
+                var person_before = collection[index];
+
+                var capturedTime_before = person_before.capturedTime;
+                var capturedTime_after = person.capturedTime;
+
+                /*TIME AFTER GREATER THAN BEFORE*/
+                if (new Date(capturedTime_after) > new Date(capturedTime_before)) {
+
+                    collection[index] = person;
+                    // console.log("Index: " + index + " time: " + time_diff(capturedTime_before,capturedTime_after).second + "s");
+                }
             }
         }
-        ;
+
+
+
         return collection;
     };
 

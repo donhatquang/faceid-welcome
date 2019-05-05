@@ -20,7 +20,7 @@ $photo_album = "3e47857f-7d30-318f-b297-82f24eb66924";
 foreach ($data as $key=>$person) {
 
     $FaceID = new FaceID();
-    $FaceID->setHost("http://192.168.21.108:8080/v4");
+    $FaceID->setHost("http://192.168.51.8:8080/v4");
     $FaceID->setPhotoAlbum($photo_album);
 
     if ($key >= 1) {

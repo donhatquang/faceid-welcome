@@ -8,14 +8,14 @@
 
 header("Content-type: application/json; charset:utf-8");
 
-$list = (isset($_GET["act"])) ? $_GET["act"] : "photoAlbums";
+$act = (isset($_GET["act"])) ? $_GET["act"] : "photoAlbums";
 
 
 require("../model/FaceQuery.php");
 
 $FaceQuery = new FaceQuery();
 
-$result = $FaceQuery->getRangeList($list);
+$result = $FaceQuery->getRangeList($act);
 
 echo $result;
 //echo json_encode($result);

@@ -16,12 +16,17 @@ var FaceAnalyze = function () {
         var photoID = person.photoID;
         var capture = person.capture;
 
+        var Hiface_param = myface.param;
+        var video_name = Hiface_param.videos.find(x => x.id === person.videoId).name;
+
+        // console.log(video_name);
+
         var param = {
 
             photoID: photoID,
             name: name,
             capture: capture,
-
+            video: video_name
         }
 
         /**/

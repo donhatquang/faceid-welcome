@@ -52,16 +52,17 @@ class Monitor
     }
 
 
-    public function addDB($photoID, $name, $capture, $face)
+    public function addDB($photoID, $param)
     {
+
+        $face = $param->analyze;
 
         $quality = round($face->attributes->quality * 100, 2);
         $face_analyze = json_encode($face->attributes);
 
-//
 
-        $sql = "INSERT INTO `monitor`(`photoID`, `name`, `face_analyze`,`quality`, `capture`, `cameraq`)
-          VALUES ('" . $photoID . "', '" . $name . "', '" . $face_analyze . "', '" . $quality . "', '" . $capture . "')";
+        $sql = "INSERT INTO `monitor`(`photoID`, `name`, `face_analyze`,`quality`, `capture`, `camera`)
+          VALUES ('" . $photoID . "', '" . $param->name . "', '" . $face_analyze . "', '" . $quality . "', '" . $param->capture . "', '".$param->video."')";
 
         /*
                 $getPerson = $this->getPerson($photoID);

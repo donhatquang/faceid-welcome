@@ -8,13 +8,14 @@
 header("Content-type: application/json; charset:utf-8");
 
 require("../model/FaceID.php");
+require ("Tools.php");
 
 $url = $_SERVER['REQUEST_URI'];
 //header("Refresh: 5; URL=$url");
 
 $FaceID = new FaceID();
 
-$threshold = 75;
+
 
 if (isset($_GET["subscribe"])) {
 
@@ -42,11 +43,14 @@ if (isset($_GET["limit"])) {
     $param["maxMessages"] = $_GET["limit"];
 }
 
+$threshold = 70;
 $threshold = isset($_GET["threshold"]) ? $_GET["threshold"] : $threshold;
 
-
+/*GET SUBSCRIBE*/
 $sub = $FaceID->getsub($subscribe, $param);
+
 $data = array();
+$Tool = new Tools();
 
 foreach ($sub as $key => $item) {
 
@@ -57,7 +61,7 @@ foreach ($sub as $key => $item) {
     $person = base64_decode($item["message"]["data"]);
     $person = json_decode($person, false);
 
-//    var_dump($person);
+
 
     if ($person->messageType == "MESSAGE_TYPE_ALERT") {
 
@@ -68,18 +72,16 @@ foreach ($sub as $key => $item) {
             "capture" => $person->capturedPhotos->face,
             "photoID" => $person->extraTopk[0]->photoId,
             "capturedTime" => $person->capturedTime,
-            "messageType" => $person->messageType
+            "capturedTimeFormat" => $Tool->UTC2Local($person->capturedTime),
+            "messageType" => $person->messageType,
+            "videoId" => $person->videoId
 
         );
 
         /*CHECK THRESH HOLD*/
         $data[] = $person;
 
-//        echo '<h1>' . $person["score"] . '</h1>';
-//        echo '<img src="http://192.168.51.12:8080/v4/photos/' . $person["capture"] . '/data"/>';
-
 //        var_dump($person);
-
     }
 }
 //var_dump($data);
