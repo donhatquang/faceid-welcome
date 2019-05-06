@@ -16,8 +16,14 @@ var FaceAnalyze = function () {
         var photoID = person.photoID;
         var capture = person.capture;
 
-        var Hiface_param = myface.param;
-        var video_name = Hiface_param.videos.find(x => x.id === person.videoId).name;
+        let face_param = myface.param;
+        let video_obj = face_param.videos.find(x => x.id === person.videoId);
+
+        let video_name = null;
+
+        if (video_obj !== undefined) {
+            video_name = video_obj.name;
+        }
 
         // console.log(video_name);
 
@@ -31,11 +37,16 @@ var FaceAnalyze = function () {
 
         /**/
 
+        var score = Math.round(person.score) + "%";
+
+        var obj = $("div[data-rel='" + photoID + "']");
+        obj.find(".progress-bar").css({width: score}).html(score);
 
         $.getJSON(url, param, function (data) {
 
             analyze_init(data, photoID);
         })
+
 
         return;
     };
@@ -61,7 +72,10 @@ var FaceAnalyze = function () {
         var obj = $("div[data-rel='" + photoID + "']");
 
         obj.find(".title").append(" (Age: " + age + ")");
-        obj.find(".progress-bar").css({width: quality}).html(quality);
+
+        /*SCORE*/
+        // obj.find(".progress-bar").css({width: person.}).html(quality);
+        // obj.find(".progress-bar").css({width: quality}).html(quality);
 
         /*CHECK EYE*/
         /*
@@ -76,6 +90,7 @@ var FaceAnalyze = function () {
             ' - Mắt phải: ' + right_eye.glass +
             '</p>');
 */
+
         /*ADD GENDER*/
         /*ADD CUBE*/
         obj.find(".people").after(image_gender).after(draw_cube(pose));

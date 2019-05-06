@@ -13,6 +13,14 @@ class FaceID
     private $con;
     private $photo_album;
     private $http;
+
+    public function __construct()
+    {
+//        $this->host = $host;
+
+        $this->http = new AipHttpClient();
+    }
+
     /**
      * @param mixed $con
      */
@@ -37,15 +45,6 @@ class FaceID
         $this->host = $host;
     }
 
-
-
-    public function __construct()
-    {
-//        $this->host = $host;
-
-        $this->http = new AipHttpClient();
-    }
-
     /**
      * @param mixed $photo_album
      */
@@ -54,35 +53,64 @@ class FaceID
         $this->photo_album = $photo_album;
     }
 
-    public function addPerson($person)
+    public function addPerson($person, $type = "person")
     {
 //        $this->photo_album = $photo_album;
+
 
         //API URL
         $url = $this->host . '/photos';
 
 
-//setup request to send json via POST
-        $data = array(
-            "photoAlbumId" => $this->photo_album,
-            "name" => $person->unicodeName,
-            "description" => $person->description,
-            "format" => "image/jpeg",
-            "id" => "",
+        if ($type == "star") {
+
+            $description = $person->Cat . " - " . $person->Country;
+
+            $image = $person->Image;
+
+            $b64_image = base64_encode(file_get_contents("D:\\7000_cele\\image\\" . $image));
+
+            $data = array(
+                "photoAlbumId" => $this->photo_album,
+                "name" => $person->Name,
+                "description" => $description,
+                "format" => "image/jpeg",
+                "id" => "",
 
 //            IMAGE DATA
-            "data" => $person->b64Face,
+                "data" => $b64_image,
 
-            "tags" => array(
+                "tags" => array(
+                    "name" => $person->Name,
+                    "description" => $description,
+                ));
+
+
+        } else {
+            $data = array(
+                "photoAlbumId" => $this->photo_album,
                 "name" => $person->unicodeName,
                 "description" => $person->description,
-                "country" => $person->country,
-                "gender" => $person->gender,
-                "birthday" => $person->birthday
+                "format" => "image/jpeg",
+                "id" => "",
+
+//            IMAGE DATA
+                "data" => $person->b64Face,
+
+                "tags" => array(
+                    "name" => $person->unicodeName,
+                    "description" => $person->description,
+                    "country" => $person->country,
+                    "gender" => $person->gender,
+                    "birthday" => $person->birthday
 
 
-            )
-        );
+                )
+            );
+        }
+
+//setup request to send json via POST
+
 
         $result = $this->http->post($url, json_encode($data));
 

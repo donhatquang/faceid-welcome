@@ -74,7 +74,7 @@ var FaceID = function () {
                 '                                <div class="description">' + info.description + '</div>\n' +
                 '                                <p>' + tools.formatDate(capturedTime).fulltime + '</p>\n' + //+ ' (Score: ' + score
                 '                                <div class="progress">\n' +
-                '                                    <div class="progress-bar progress-bar-striped progress-bar-animated nice" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>\n' +
+                '                                    <div class="progress-bar progress-bar-striped progress-bar-animated nice" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div>\n' +
                 '                                </div>\n' +
                 '                            </div>\n' +
                 '                            <div class="col-xl-4">\n' + image +
@@ -89,16 +89,19 @@ var FaceID = function () {
 
             var timediff = tools.time_diff(capturedTime);
 
-            // console.log(timediff);
+            console.log(timediff);
 
             /*REAL TIME DISPLAY*/
-            if (config.realtime && timediff.second <= 30) {
+            if (config.realtime) {
 
-                $(area).append(text);
+                if (timediff.second <= 30) {
+
+                    $(area).append(text);
+                }
+
 
                 // console.log("History: " + name + " - " + tools.formatDate(capturedTime).fulltime + " - Minute: " + timediff.minute + " - Second: " + timediff.second);
                 console.log("History: " + timediff.second + "s ago");
-
 
             }
             else {
@@ -108,7 +111,14 @@ var FaceID = function () {
 
 
             /*ANALYZE*/
-            myanalyze.analyze(person);
+            try {
+
+                myanalyze.analyze(person);
+            }
+            catch (e) {
+                console.log(e);
+            }
+
 
         }
         return;
