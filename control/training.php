@@ -26,7 +26,7 @@ foreach ($data as $key => $person) {
     $FaceID->setHost("http://192.168.51.8:8080/v4");
     $FaceID->setPhotoAlbum($photo_album);
 
-    if ($key == 16) {
+    if ($key == 35) {
 
 //        var_dump($person);
 
