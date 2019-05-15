@@ -7,6 +7,8 @@ var FaceID = function () {
         area: '.faceid-list',
         flag: true, /*true is init ready*/
 
+        waiting_time: 3 * 60,
+
         ack: true,
         realtime: true
     };
@@ -94,7 +96,7 @@ var FaceID = function () {
             /*REAL TIME DISPLAY*/
             if (config.realtime) {
 
-                if (timediff.second <= 30) {
+                if (timediff.second <= config.waiting_time) {
 
                     $(area).append(text);
                 }
