@@ -23,7 +23,7 @@ $error_count = 0;
 foreach ($data as $key => $person) {
 
     $FaceID = new FaceID();
-    $FaceID->setHost("http://192.168.51.8:8080/v4");
+    $FaceID->setHost("http://192.168.51.12:8080/v4");
     $FaceID->setPhotoAlbum($photo_album);
 
     if ($key == 35) {

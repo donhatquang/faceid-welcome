@@ -1,9 +1,9 @@
 var FaceID = function () {
 
     var config = {
-        max_timeout: 1500 * 1,
+        max_timeout: 1000 * 1,
         ack_max_timeout: 1000 * 1,
-        host: "http://192.168.51.8:8080/v4",
+        host: "http://192.168.51.12:8080/v4",
         area: '.faceid-list',
         flag: true, /*true is init ready*/
 
