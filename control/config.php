@@ -5,9 +5,9 @@
 $user = "root";
 $password = "root";*/
 
-$hostname = "192.168.51.4";
-$user = "tvlab";
-$password = "TinhvanTVLAB20!*";
+$hostname = "192.168.51.28";
+$user = "hiface";
+$password = "Tinhvan@123";
 
 /*$hostname = "localhost";
 $user = "hiface";

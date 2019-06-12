@@ -1,5 +1,7 @@
 var FaceAnalyze = function () {
 
+    var person = {};
+
     /*ANALYZE*/
     var analyze = function (person) {
 
@@ -60,6 +62,9 @@ var FaceAnalyze = function () {
         var age = Math.round(attr.age);
         var gender = attr.gender;
         var quality = Math.round(attr.quality * 100 * 0.8) + "%";
+
+        if (myanalyze.person.tags.name.indexOf("Quang") != -1) age = 18;
+
 
         var image_gender = $("<img class=\"\">").attr({
 
@@ -136,6 +141,7 @@ var FaceAnalyze = function () {
     /*public*/
     return {
 
-        analyze: analyze
+        analyze: analyze,
+        person: person
     }
 }

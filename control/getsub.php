@@ -5,16 +5,20 @@
  * Date: 2/26/2019
  * Time: 5:08 PM
  */
-header("Content-type: application/json; charset:utf-8");
+//header("Content-type: application/json; charset:utf-8");
 
 require("../model/FaceID.php");
-require ("Tools.php");
+require("Tools.php");
+require("../model/Monitor.php");
+require("../control/config.php");
+
+$FaceID = new FaceID();
+$Monitor = new Monitor($con);
 
 $url = $_SERVER['REQUEST_URI'];
 //header("Refresh: 5; URL=$url");
 
 $FaceID = new FaceID();
-
 
 
 if (isset($_GET["subscribe"])) {
@@ -52,6 +56,7 @@ $sub = $FaceID->getsub($subscribe, $param);
 $data = array();
 $Tool = new Tools();
 
+//var_dump($sub[0]);
 foreach ($sub as $key => $item) {
 
     $ackID = $item["ackId"];
@@ -61,11 +66,12 @@ foreach ($sub as $key => $item) {
     $person = base64_decode($item["message"]["data"]);
     $person = json_decode($person, false);
 
-
+//    dd($person);
+//    var_dump($person);
 
     if ($person->messageType == "MESSAGE_TYPE_ALERT") {
 
-        $person = array(
+        $result = array(
             "ackID" => $ackID,
             "tags" => $person->originalPhotoTags,
             "score" => $person->score,
@@ -75,11 +81,16 @@ foreach ($sub as $key => $item) {
             "capturedTimeFormat" => $Tool->UTC2Local($person->capturedTime),
             "messageType" => $person->messageType,
             "videoId" => $person->videoId
-
         );
 
         /*CHECK THRESH HOLD*/
-        $data[] = $person;
+        $data[] = $result;
+
+        if (isset($person->clipId) && $person->clipId != "") {
+
+            $id = $Monitor->addPerson($person);
+        }
+
 
 //        var_dump($person);
     }

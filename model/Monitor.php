@@ -52,6 +52,24 @@ class Monitor
     }
 
 
+    public function addPerson($person)
+    {
+
+        $photoID = $person->extraTopk[0]->photoId;
+        $videoID = $person->videoId;
+        $clipID = $person->clipId;
+
+        $capture_photoID = $person->capturedPhotoId;
+
+        $sql = "INSERT INTO `alert`(`message`, `photoID`, `videoID`, `clipID`, `capture_photoID`)
+          VALUES ('" . json_encode($person) . "', '" . $photoID . "', '$videoID','$clipID','$capture_photoID')";
+
+        $this->con->query($sql);
+
+        return $id = $this->con->insert_id;
+
+    }
+
     public function addDB($photoID, $param)
     {
 
@@ -62,26 +80,8 @@ class Monitor
 
 
         $sql = "INSERT INTO `monitor`(`photoID`, `name`, `face_analyze`,`quality`, `capture`, `camera`)
-          VALUES ('" . $photoID . "', '" . $param->name . "', '" . $face_analyze . "', '" . $quality . "', '" . $param->capture . "', '".$param->video."')";
+          VALUES ('" . $photoID . "', '" . $param->name . "', '" . $face_analyze . "', '" . $quality . "', '" . $param->capture . "', '" . $param->video . "')";
 
-        /*
-                $getPerson = $this->getPerson($photoID);
-
-                if ($getPerson == false) {
-
-
-
-                } else {
-
-                    $sql = "UPDATE `monitor` SET
-        `quality` = '91.4',
-        `face_analyze` = '" . $face_analyze . "',
-        `quality` = '" . $quality . "',
-        `capture` = '" . $capture . "'
-
-         WHERE `monitor`.`id` LIKE '" . $getPerson->id . "'";
-
-                }*/
 
         $this->con->query($sql);
 

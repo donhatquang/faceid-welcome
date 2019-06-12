@@ -116,6 +116,7 @@ var FaceID = function () {
             try {
 
                 myanalyze.analyze(person);
+                myanalyze.person = person;
             }
             catch (e) {
                 console.log(e);

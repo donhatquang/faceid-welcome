@@ -5,7 +5,7 @@
  * Date: 2/26/2019
  * Time: 5:08 PM
  */
-header("Content-type: application/json; charset:utf-8");
+//header("Content-type: application/json; charset:utf-8");
 
 require("../model/FaceID.php");
 require("../model/Monitor.php");
@@ -19,9 +19,11 @@ $Monitor = new Monitor($con);
 if (isset($_GET["photoID"])) {
 
     $photoID = $_GET["photoID"];
-    $name = $_GET["name"];
+    $name = isset($_GET["name"]) ? $_GET["name"] : "";
     $capture = $_GET["capture"];
     $video = isset($_GET["video"]) ? $_GET["video"] : "cam1";
+
+
 
 } else {
 
@@ -44,7 +46,7 @@ $param = (object)array(
     "video" => $video
 );
 
-//$id = $Monitor->addDB($photoID, $param);
+$id = $Monitor->addDB($photoID, $param);
 //var_dump($id);
 
 //var_dump($data);
