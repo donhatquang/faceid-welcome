@@ -12,6 +12,7 @@ require("../model/Monitor.php");
 require("../control/config.php");
 
 $FaceID = new FaceID();
+$host = $FaceID->getHost();
 $Monitor = new Monitor($con);
 
 /*SET DB*/
@@ -28,7 +29,7 @@ if (isset($_GET["photoID"])) {
     return;
 }
 
-$host = $FaceID->getHost();
+
 $photo_data = base64_encode(file_get_contents($host . '/photos/' . $photoID . '/data'));
 
 $data = $FaceID->analyze($photo_data);
@@ -44,7 +45,7 @@ $param = (object)array(
     "video" => $video
 );
 
-//$id = $Monitor->addDB($photoID, $param);
+$id = $Monitor->addDB($photoID, $param);
 //var_dump($id);
 
 //var_dump($data);

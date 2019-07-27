@@ -6,16 +6,19 @@
  * Time: 5:30 PM
  */
 
-require("AipHttpClient.php");
+//require("AipHttpClient.php");
+require("../model/FaceID.php");
 
 class FaceQuery
 {
     private $http;
-    private $host = "http://192.168.51.12:8080/v4";
+    private $host = "http://192.168.21.108:8080/v4";
 
     public function __construct()
     {
         $this->http = new AipHttpClient();
+        $FaceID = new FaceID();
+        $this->host = $FaceID->getHost();
 
         return;
     }

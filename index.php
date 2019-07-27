@@ -21,7 +21,7 @@ if (isset($_GET["subscribe"])) {
     $param["subscribe"] = $_GET["subscribe"];
 } else {
 
-    $param["subscribe"] = "main";
+    $param["subscribe"] = "vpbank_sub";
 }
 $param_str = json_encode($param);
 ?>

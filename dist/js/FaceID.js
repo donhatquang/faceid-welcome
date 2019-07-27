@@ -3,13 +3,13 @@ var FaceID = function () {
     var config = {
         max_timeout: 1000 * 1,
         ack_max_timeout: 1000 * 1,
-        host: "http://192.168.51.12:8080/v4",
+        host: "http://192.168.0.51:8080/v4",
         area: '.faceid-list',
         flag: true, /*true is init ready*/
 
         waiting_time: 3 * 60,
 
-        ack: true,
+        ack: false,
         realtime: true
     };
 
