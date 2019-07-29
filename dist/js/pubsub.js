@@ -7,72 +7,92 @@ var Pubsub = function (myconfig) {
 
     /*INIT UI*/
     this.subinit = function (data) {
+        console.log(data);
 
         /*REMOVE*/
         $(config.area).html("");
         var area = config.area;
 
         // console.log(data);
-        for (i in data) {
 
-            /*DISPLAY AREA DEFINE*/
-            /*if (i >= 10) return;
+        /*DISPLAY AREA DEFINE*/
+        /*if (i >= 10) return;
 
-            if (i < 5) {
-                var area = config.area + "-1";
+        if (i < 5) {
+            var area = config.area + "-1";
+        }
+        else if (i >= 5) {
+            area = config.area + "-2";
+        }*/
+
+        //-------------
+        var person = data[0];
+
+        var info = person.tags;
+
+        var photoID = person.photoID;
+        var capture = person.capture;
+        var score = Math.round(person.score);
+        /*THRESH-HOLD*/
+
+        var name = info.name;
+        var capturedTime = new Date(person.capturedTime);
+
+        // var idPerson = info.idPerson;
+
+        /*IMAGE*/
+        var image = $("<img />").attr({
+
+            "class": "image-cropper",
+            "src": config.host + '/photos/' + capture + '/data'
+
+        }).prop('outerHTML');
+
+        /*CHECK EXIST*/
+        // if ($("div[data-rel='"+photoID+"']").length == 0) {}
+
+        var emotion = `
+            <div class="col-xl-2" style="float: right;">
+                <img class="" src="dist/img/emoticon/unknown.png" alt="" style="
+                    float: left;
+                ">
+            </div>`;
+
+        /*EMOTICON*/
+        let url = "http://192.168.51.12:8123/api/agender/";
+        let param = {
+            photoData: "http://14.160.67.114:8080/v4/photos/" + capture + "/data"
+        };
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: param,
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if (data.status === "ok") {
+                    emotion = `
+                        <div class="col-xl-2" style="float: right;">
+                            <img class="" src="dist/img/emoticon/${data.emotion}.png" alt="" style="
+                                float: left;
+                            ">
+                        </div>`;
+                }
             }
-            else if (i >= 5) {
-                area = config.area + "-2";
-            }*/
+        });
 
-            //-------------
-            var person = data[i];
+        let detail =
+            '                            <div class="col-xl-8 info-card">\n' +
+            '                                <div class="title">' + name + '</div>\n' +
+            '                                <div class="description">' + info.description + '</div>\n' +
+            '                                <p>' + tools.formatDate(capturedTime).fulltime + '</p>\n' + //+ ' (Score: ' + score
+            /*'                                <div class="progress">\n' +
+            '                                    <div class="progress-bar progress-bar-striped progress-bar-animated nice" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div>\n' +
+            '                                </div>\n' +
+            */'                            ' +
+            '</div>\n';
 
-            var info = person.tags;
-
-            var photoID = person.photoID;
-            var capture = person.capture;
-            var score = Math.round(person.score);
-            /*THRESH-HOLD*/
-
-            var name = info.name;
-            var capturedTime = new Date(person.capturedTime);
-
-            // var idPerson = info.idPerson;
-
-            /*IMAGE*/
-            var image = $("<img />").attr({
-
-                "class": "image-cropper",
-                "src": config.host + '/photos/' + capture + '/data'
-
-            }).prop('outerHTML');
-
-            /*CHECK EXIST*/
-            // if ($("div[data-rel='"+photoID+"']").length == 0) {}
-
-            var emotion = `
-            <div class="col-xl-2" style="
-    float: right;
-">
-<img class="" src="http://hiface-5128:8001/assets/image/emoticon/neutral.png" alt="" style="
-    float: left;
-    /* position: absolute; */
-">
-</div>`;
-
-            let detail =
-                '                            <div class="col-xl-8">\n' +
-                '                                <div class="title">' + name + '</div>\n' +
-                '                                <div class="description">' + info.description + '</div>\n' +
-                '                                <p>' + tools.formatDate(capturedTime).fulltime + '</p>\n' + //+ ' (Score: ' + score
-                /*'                                <div class="progress">\n' +
-                '                                    <div class="progress-bar progress-bar-striped progress-bar-animated nice" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div>\n' +
-                '                                </div>\n' +
-                */'                            ' +
-                '</div>\n';
-
-            var text = ` <div class="row text-card" data-rel="' + photoID + '">
+        var text = ` <div class="row text-card" data-rel="${photoID}">
                 
                 ${image} 
                 ${detail}
@@ -81,42 +101,40 @@ var Pubsub = function (myconfig) {
 </div>                
 `;
 
-            /*INIT*/
+        /*INIT*/
 
-            var timediff = tools.time_diff(capturedTime);
+        var timediff = tools.time_diff(capturedTime);
 
-            console.log(timediff);
+        console.log(timediff);
 
-            /*REAL TIME DISPLAY*/
-            if (config.realtime) {
+        /*REAL TIME DISPLAY*/
+        if (config.realtime) {
 
-                if (timediff.second <= config.waiting_time) {
-
-                    $(area).append(text);
-                }
-
-
-                // console.log("History: " + name + " - " + tools.formatDate(capturedTime).fulltime + " - Minute: " + timediff.minute + " - Second: " + timediff.second);
-                console.log("History: " + timediff.second + "s ago");
-
-            } else {
+            if (timediff.second <= config.waiting_time) {
 
                 $(area).append(text);
             }
 
 
-            /*ANALYZE*/
-            try {
+            // console.log("History: " + name + " - " + tools.formatDate(capturedTime).fulltime + " - Minute: " + timediff.minute + " - Second: " + timediff.second);
+            console.log("History: " + timediff.second + "s ago");
 
-                if (config.analyze)
-                    myanalyze.analyze(person);
+        } else {
 
-            } catch (e) {
-                console.log(e);
-            }
-
-
+            $(area).append(text);
         }
+
+
+        /*ANALYZE*/
+        try {
+
+            if (config.analyze)
+                myanalyze.analyze(person);
+
+        } catch (e) {
+            console.log(e);
+        }
+
         return;
     };
 
@@ -201,7 +219,7 @@ var Pubsub = function (myconfig) {
 
             "ackIds": ackid
 
-        }
+        };
 
         var ack_str = JSON.stringify(ack_obj);
 

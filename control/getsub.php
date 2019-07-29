@@ -59,7 +59,6 @@ foreach ($sub as $key => $item) {
     $person = base64_decode($item["message"]["data"]);
     $person = json_decode($person, false);
 
-
     if ($person->messageType == "MESSAGE_TYPE_ALERT") {
 
         $person = array(

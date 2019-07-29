@@ -7,7 +7,7 @@ var tools;
 $(function () {
 
     tools = new Tools();
-    myanalyze = new FaceAnalyze();
+    //myanalyze = new FaceAnalyze();
 
     myface = new FaceID();
     let config = myface.config;

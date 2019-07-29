@@ -25,17 +25,16 @@ var FaceID = function () {
     /*COMPARE HISTORY COLLECTION*/
     this.compareCollection = function (data) {
 
-        for (i in data) {
+        for (let i in data) {
 
             let after_person = data[i];
-
             /*FIND OBJECT PERSON IN COLLECTION BY PHOTOID*/
             let before_person = Hiface_collection.find(
                 person => (
-                person.photoID === after_person.photoID
-            //    && person.tags.name === after_person.tags.name
+                    person.photoID === after_person.photoID
+                    //    && person.tags.name === after_person.tags.name
 
-            )
+                )
             );
 
             /*CHECK TIME*/
@@ -56,7 +55,7 @@ var FaceID = function () {
         }
 
         return data;
-    }
+    };
 
     /*ACK*/
     //messageType=="MESSAGE_TYPE_ALERT"
@@ -68,7 +67,7 @@ var FaceID = function () {
         var url = "control/getlist.php";
         var param = {
             act: act
-        }
+        };
 
         $.getJSON(url, param, function (data) {
 
@@ -79,10 +78,10 @@ var FaceID = function () {
             /*START GET SUB*/
             pubsub.getsub();
 
-        })
+        });
 
         return;
-    }
+    };
 
     /*CONSTRUCST*/
 
@@ -90,7 +89,7 @@ var FaceID = function () {
 
         getList("videos");
         console.log("Hello HiFace");
-    }
+    };
 
     /*DEFINE*/
     /*PUBLIC METHOD*/
@@ -102,4 +101,4 @@ var FaceID = function () {
     this.config = config;
     this.param = Hiface_param;
     this.collection = Hiface_collection;
-}
+};

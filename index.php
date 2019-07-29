@@ -1,11 +1,11 @@
 <?php
 
-require ("vendor/autoload.php");
+require("vendor/autoload.php");
 
 $dotenv = Dotenv\Dotenv::create(__DIR__);
 $dotenv->load();
 
-$host =  getenv("EXTERNAL_HOST");
+$host = getenv("EXTERNAL_HOST");
 
 
 //exit();
@@ -74,17 +74,6 @@ $param_str = json_encode($param);
 <div class="container-fluid">
     <div class="confetti">
     </div>
-    <div class="header">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-4"></div>
-                <div class="col-xl-4">
-<!--                    <img src="dist/image/vp-bank-logo.jpg" class="logo">-->
-                </div>
-                <div class="col-xl-4"></div>
-            </div>
-        </div>
-    </div>
     <div class="main">
         <div class="container-fluid">
             <div class="row">
@@ -94,13 +83,6 @@ $param_str = json_encode($param);
 
                     </div>
                 </div>
-<!--                <div class="col-xl-1 d-flex align-items-center">-->
-<!--                    <img class="layer" src="dist/image/Materials-01-04.png">-->
-<!--                </div>-->
-
-               <!-- <div class="col-xl-5 interact interact-right">
-                    <div class="container-fluid faceid-list faceid-list-2"></div>
-                </div>-->
             </div>
         </div>
     </div>
