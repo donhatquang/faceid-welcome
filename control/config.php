@@ -9,11 +9,10 @@ $password = "root";*/
 $user = "tvlab";
 $password = "TinhvanTVLAB20!*";*/
 
-$hostname = "localhost";
-$user = "hiface";
-$password = "Tinhvan@123";
-
-$database = "faceid";
+$hostname = getenv("DB_HOST");
+$user = getenv("DB_USER");
+$password = getenv("DB_PASS");
+$database = getenv("DB_NAME");
 
 //ket noi csdl, ket qua tra ve bien $con
 function connectdb($servername, $username, $password, $dbname)

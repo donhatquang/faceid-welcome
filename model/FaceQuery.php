@@ -12,13 +12,16 @@ require("../model/FaceID.php");
 class FaceQuery
 {
     private $http;
-    private $host = "http://192.168.21.108:8080/v4";
+    private $host;
 
     public function __construct()
     {
         $this->http = new AipHttpClient();
         $FaceID = new FaceID();
+
         $this->host = $FaceID->getHost();
+
+//        exit();
 
         return;
     }
@@ -34,9 +37,10 @@ class FaceQuery
         return $result["content"];
     }
 
-    public function getRangeList($act = "photoAlbums") {
+    public function getRangeList($act = "photoAlbums")
+    {
 
-        $url = $this->host . "/".$act;
+        $url = $this->host . "/" . $act;
 
         $result = $this->http->get($url);
 

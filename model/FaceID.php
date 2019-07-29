@@ -5,20 +5,27 @@
  * Date: 2/26/2019
  * Time: 2:17 PM
  */
+
+require("../vendor/autoload.php");
+
+$dotenv = Dotenv\Dotenv::create(__DIR__."/..");
+$dotenv->load();
+
 require("AipHttpClient.php");
 
+//
 class FaceID
 {
-    private $host = "http://192.168.0.51:8080/v4";
+    private $host;
     private $con;
     private $photo_album;
     private $http;
 
     public function __construct()
     {
-//        $this->host = $host;
 
         $this->http = new AipHttpClient();
+        $this->host = getenv("HOST");
     }
 
     /**

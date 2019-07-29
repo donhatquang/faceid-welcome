@@ -1,5 +1,15 @@
 <?php
 
+require ("vendor/autoload.php");
+
+$dotenv = Dotenv\Dotenv::create(__DIR__);
+$dotenv->load();
+
+$host =  getenv("EXTERNAL_HOST");
+
+
+//exit();
+
 $param = array(
 
     "wait" => 5,
@@ -19,9 +29,10 @@ if (isset($_GET["limit"])) {
 if (isset($_GET["subscribe"])) {
 
     $param["subscribe"] = $_GET["subscribe"];
+
 } else {
 
-    $param["subscribe"] = "vpbank_sub";
+    $param["subscribe"] = getenv("SUBSCRIBE");
 }
 $param_str = json_encode($param);
 ?>
@@ -42,13 +53,18 @@ $param_str = json_encode($param);
 
 
         var request_param_global = <?php echo $param_str?>;
+        var hiface_host = "<?php echo getenv("HOST"); ?>";
     </script>
 
     <script src="dist/js/jquery-3.2.1.min.js"></script>
     <!--<script src='dist/js/responsivevoice.js'></script>-->
     <script src='dist/js/tools.js?<?php echo rand(); ?>'></script>
     <script src='dist/js/analyze.js?<?php echo rand(); ?>'></script>
+
+
     <script src='dist/js/FaceID.js?<?php echo rand(); ?>'></script>
+    <script src='dist/js/pubsub.js?<?php echo rand(); ?>'></script>
+
 
     <script src='dist/js/main.js?<?php echo rand(); ?>'></script>
 
@@ -58,7 +74,7 @@ $param_str = json_encode($param);
 <div class="container-fluid">
     <div class="confetti">
     </div>
-    <div class="header" style="margin-top: 100px;">
+    <div class="header">
         <div class="container">
             <div class="row">
                 <div class="col-xl-4"></div>
@@ -72,7 +88,7 @@ $param_str = json_encode($param);
     <div class="main">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xl-12 interact interact-left">
+                <div class="col-xl-11 interact interact-left">
                     <div class="container-fluid faceid-list">
 
 

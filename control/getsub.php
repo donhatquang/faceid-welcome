@@ -8,14 +8,10 @@
 //header("Content-type: application/json; charset:utf-8");
 
 require("../model/FaceID.php");
-require ("Tools.php");
-
-$url = $_SERVER['REQUEST_URI'];
-//header("Refresh: 5; URL=$url");
+require("Tools.php");
 
 $FaceID = new FaceID();
-
-
+$url = $_SERVER['REQUEST_URI'];
 
 if (isset($_GET["subscribe"])) {
 
@@ -30,7 +26,7 @@ if (isset($_GET["subscribe"])) {
 $param = array(
 
     "maxWaitTimeSeconds" => 2,
-    "maxMessages" => 5
+    "maxMessages" => 50
 );
 
 if (isset($_GET["wait"])) {
@@ -43,7 +39,7 @@ if (isset($_GET["limit"])) {
     $param["maxMessages"] = $_GET["limit"];
 }
 
-$threshold = 70;
+$threshold = getenv("THRESHOLD");
 $threshold = isset($_GET["threshold"]) ? $_GET["threshold"] : $threshold;
 
 /*GET SUBSCRIBE*/
@@ -62,7 +58,6 @@ foreach ($sub as $key => $item) {
 
     $person = base64_decode($item["message"]["data"]);
     $person = json_decode($person, false);
-
 
 
     if ($person->messageType == "MESSAGE_TYPE_ALERT") {
