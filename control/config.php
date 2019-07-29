@@ -9,7 +9,7 @@ $password = "root";*/
 $user = "tvlab";
 $password = "TinhvanTVLAB20!*";*/
 
-//$hostname = "localhost";
+$hostname = "localhost";
 $user = "hiface";
 $password = "Tinhvan@123";
 

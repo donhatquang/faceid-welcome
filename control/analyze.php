@@ -5,7 +5,7 @@
  * Date: 2/26/2019
  * Time: 5:08 PM
  */
-header("Content-type: application/json; charset:utf-8");
+//header("Content-type: application/json; charset:utf-8");
 
 require("../model/FaceID.php");
 require("../model/Monitor.php");
