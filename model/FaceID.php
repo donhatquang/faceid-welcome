@@ -17,7 +17,6 @@ require("AipHttpClient.php");
 class FaceID
 {
     private $host;
-    private $analyze_host;
     private $con;
     private $photo_album;
     private $http;
@@ -27,7 +26,6 @@ class FaceID
 
         $this->http = new AipHttpClient();
         $this->host = getenv("HOST");
-        $this->analyze_host = getenv("ANALYZE");
     }
 
     /**
@@ -124,23 +122,6 @@ class FaceID
         $result = $this->http->post($url, json_encode($data));
 
         return $result;
-    }
-
-    public function emotion($photoData) {
-
-        $url = $this->analyze_host."/api/agender/";
-
-        $result = $this->http->post($url, array(
-            "photoData" => $photoData
-        ));
-
-        if ($result["code"] == 200) {
-
-            return $result["content"];
-        }
-
-        return false;
-
     }
 
     public function getsub($subscribe, $param)

@@ -1,12 +1,11 @@
 var FaceID = function () {
 
     var config = {
-        max_timeout: 2000 * 1,
+        max_timeout: 1000 * 1,
         ack_max_timeout: 1000 * 1,
 
         host: hiface_host,
         area: '.faceid-list',
-        background: ".confetti",
         flag: true, /*true is init ready*/
 
         waiting_time: 3 * 60,

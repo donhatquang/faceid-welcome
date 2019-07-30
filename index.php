@@ -54,7 +54,6 @@ $param_str = json_encode($param);
 
         var request_param_global = <?php echo $param_str?>;
         var hiface_host = "<?php echo getenv("HOST"); ?>";
-        var analyze_host = "<?php echo getenv("ANALYZE"); ?>";
     </script>
 
     <script src="dist/js/jquery-3.2.1.min.js"></script>
