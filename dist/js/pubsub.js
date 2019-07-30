@@ -52,10 +52,8 @@ var Pubsub = function (myconfig) {
         // if ($("div[data-rel='"+photoID+"']").length == 0) {}
 
         var emotion = `
-            <div class="col-xl-2" style="float: right;">
-                <img class="" src="dist/img/emoticon/unknown.png" alt="" style="
-                    float: left;
-                ">
+            <div class="col-xl-2 emotion">
+                <img class="" src="dist/img/emoticon/unknown.png" alt="">
             </div>`;
 
         /*EMOTICON*/
@@ -72,10 +70,8 @@ var Pubsub = function (myconfig) {
             success: function (data) {
                 if (data.status === "ok") {
                     emotion = `
-                        <div class="col-xl-2" style="float: right;">
-                            <img class="" src="dist/img/emoticon/${data.emotion}.png" alt="" style="
-                                float: left;
-                            ">
+                        <div class="col-xl-2 emotion">
+                            <img class="" src="dist/img/emoticon/${data.emotion}.png" alt="">
                         </div>`;
                 }
             }
@@ -93,8 +89,9 @@ var Pubsub = function (myconfig) {
             '</div>\n';
 
         var text = ` <div class="row text-card" data-rel="${photoID}">
-                
-                ${image} 
+                <div class="col-xl-2">
+                    ${image}
+                </div>
                 ${detail}
                 ${emotion}
  
