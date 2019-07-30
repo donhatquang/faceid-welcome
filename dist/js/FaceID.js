@@ -6,6 +6,7 @@ var FaceID = function () {
 
         host: hiface_host,
         area: '.faceid-list',
+        background: ".confetti",
         flag: true, /*true is init ready*/
 
         waiting_time: 3 * 60,

@@ -7,10 +7,10 @@ var Pubsub = function (myconfig) {
 
     /*INIT UI*/
     this.subinit = function (data) {
+
         console.log(data);
 
-        /*REMOVE*/
-        $(config.area).html("");
+
         var area = config.area;
 
         // console.log(data);
@@ -26,13 +26,15 @@ var Pubsub = function (myconfig) {
         }*/
 
         //-------------
-        var person = data[0];
+
+        var person = data;
 
         var info = person.tags;
 
         var photoID = person.photoID;
         var capture = person.capture;
-        var score = Math.round(person.score);
+        // var score = Math.round(person.score);
+
         /*THRESH-HOLD*/
 
         var name = info.name;
@@ -51,31 +53,6 @@ var Pubsub = function (myconfig) {
         /*CHECK EXIST*/
         // if ($("div[data-rel='"+photoID+"']").length == 0) {}
 
-        var emotion = `
-            <div class="col-xl-2 emotion">
-                <img class="" src="dist/img/emoticon/unknown.png" alt="">
-            </div>`;
-
-        /*EMOTICON*/
-        let url = "http://192.168.51.12:8123/api/agender/";
-        let param = {
-            photoData: "http://14.160.67.114:8080/v4/photos/" + capture + "/data"
-        };
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: param,
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                if (data.status === "ok") {
-                    emotion = `
-                        <div class="col-xl-2 emotion">
-                            <img class="" src="dist/img/emoticon/${data.emotion}.png" alt="">
-                        </div>`;
-                }
-            }
-        });
 
         let detail =
             '                            <div class="col-xl-8 info-card">\n' +
@@ -88,21 +65,33 @@ var Pubsub = function (myconfig) {
             */'                            ' +
             '</div>\n';
 
-        var text = ` <div class="row text-card" data-rel="${photoID}">
+        var emotion = `
+            <div class="col-xl-2 emotion">
+                <img class="" src="dist/img/emoticon/unknown.png" alt="">
+            </div>`;
+
+        var text = ` 
+ 
+ <div class="row text-card" data-rel="${photoID}">
                 <div class="col-xl-2">
                     ${image}
                 </div>
+                
                 ${detail}
-                ${emotion}
- 
+                
+                            
 </div>                
 `;
 
         /*INIT*/
 
         var timediff = tools.time_diff(capturedTime);
-
         console.log(timediff);
+
+        /*CHECK VIP*/
+        checkVIP(info);
+
+
 
         /*REAL TIME DISPLAY*/
         if (config.realtime) {
@@ -116,10 +105,14 @@ var Pubsub = function (myconfig) {
             // console.log("History: " + name + " - " + tools.formatDate(capturedTime).fulltime + " - Minute: " + timediff.minute + " - Second: " + timediff.second);
             console.log("History: " + timediff.second + "s ago");
 
-        } else {
+        }
+
+        else {
 
             $(area).append(text);
         }
+
+
 
 
         /*ANALYZE*/
@@ -128,12 +121,66 @@ var Pubsub = function (myconfig) {
             if (config.analyze)
                 myanalyze.analyze(person);
 
+            /*EMOTION*/
+            checkEmotion(capture, photoID, name);
+
+
         } catch (e) {
+
             console.log(e);
         }
 
         return;
     };
+
+    var checkVIP = function (tags) {
+
+        let bg = "vpbank-bg.jpg";
+        if (tags.vip !== undefined && tags.vip == "true") {
+
+            bg = "vpbank-vip-bg.jpg";
+        }
+
+
+        $(config.background).css("background-image",`url(/dist/image/${bg})`);
+
+        return;
+    }
+
+    var checkEmotion = function (capture, photoID, name) {
+
+
+        /*EMOTICON*/
+        let url = "control/emotion.php";
+        let param = {
+            photoData: hiface_host+"/photos/" + capture + "/data"
+        };
+        let obj = $("div[data-rel='" + photoID + "']");
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: param,
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+
+                if (data.status === "ok") {
+
+                    let emotion = `
+ <div class="col-xl-2 emotion">
+                    <img class="" src="dist/img/emoticon/${data.emotion}.png" alt="">
+</div>                    
+`;
+
+                    obj.append(emotion);
+                    console.log("emotion: " + name + " - " + data.emotion);
+                }
+            }
+        });
+
+        return;
+    }
 
     /*IMPORTANT - GET SUBCRIBE*/
     var getsub = function () {
@@ -157,7 +204,22 @@ var Pubsub = function (myconfig) {
             if (flag == true || (flag == false && $(".people").length == 0)) {
 
                 /*INIT DATA*/
-                pubsub.subinit(new_data);
+
+                /*REMOVE*/
+                $(config.area).html("");
+
+                if (new_data.length != 0) {
+
+                    for (i in new_data) {
+
+                        let person = new_data[i];
+
+                        /*DISPLAY 3 PERSON*/
+                        if (i<3)
+                            pubsub.subinit(person);
+                    }
+                }
+
 
                 /*ADD TO COLLECTION*/
                 // Hiface_collection = new_data;
@@ -178,11 +240,14 @@ var Pubsub = function (myconfig) {
 
 
             /*REQUEST AGAIN*/
-            // setTimeout(getsub, config.max_timeout);
+            setTimeout(pubsub.getsub, config.max_timeout);
             // setTimeout(getMonitor, config.max_timeout);
 
         })
+
+            /*FAIL CHECK*/
             .fail(
+
                 function (jqxhr, textStatus, error) {
 
                     var err = textStatus + ", " + error;
@@ -241,6 +306,8 @@ var Pubsub = function (myconfig) {
 
         console.log("PUBSUB SERVICE");
         config = myconfig;
+
+        console.log(config);
     }
 
     this.getsub = getsub;
