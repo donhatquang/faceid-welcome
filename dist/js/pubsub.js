@@ -139,7 +139,7 @@ var Pubsub = function (myconfig) {
     };
 
     /*IMPORTANT - GET SUBCRIBE*/
-    this.getsub = function () {
+    var getsub = function () {
 
         var url = 'control/getsub.php';
         var flag = config.flag;
@@ -245,6 +245,8 @@ var Pubsub = function (myconfig) {
         console.log("PUBSUB SERVICE");
         config = myconfig;
     }
+
+    this.getsub = getsub;
 
     this.constructor = __constructor(myconfig);
 
