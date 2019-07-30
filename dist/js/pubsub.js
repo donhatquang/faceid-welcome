@@ -40,6 +40,12 @@ var Pubsub = function (myconfig) {
 
         // var idPerson = info.idPerson;
 
+        /*BACKGROUND*/
+        if (person.tags.vip !== undefined) {
+            console.log(person.tags.vip);
+            $(".confetti").css("background-image", "url('./dist/image/vpbank-vip-bg.jpg')");
+        }
+
         /*IMAGE*/
         var image = $("<img />").attr({
 
@@ -94,9 +100,8 @@ var Pubsub = function (myconfig) {
                 </div>
                 ${detail}
                 ${emotion}
- 
-</div>                
-`;
+                </div>                
+                `;
 
         /*INIT*/
 
