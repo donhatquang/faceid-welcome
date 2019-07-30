@@ -8,7 +8,7 @@ var Pubsub = function (myconfig) {
     /*INIT UI*/
     this.subinit = function (data) {
 
-        console.log(data);
+        // console.log(data);
 
 
         var area = config.area;
@@ -86,7 +86,7 @@ var Pubsub = function (myconfig) {
         /*INIT*/
 
         var timediff = tools.time_diff(capturedTime);
-        console.log(timediff);
+        // console.log(timediff);
 
         /*CHECK VIP*/
         checkVIP(info);
@@ -113,8 +113,6 @@ var Pubsub = function (myconfig) {
         }
 
 
-
-
         /*ANALYZE*/
         try {
 
@@ -136,7 +134,7 @@ var Pubsub = function (myconfig) {
     var checkVIP = function (tags) {
 
         let bg = "vpbank-bg.jpg";
-        if (tags.vip !== undefined && tags.vip == "true") {
+        if (tags && tags.vip == "true") {
 
             bg = "vpbank-vip-bg.jpg";
         }
@@ -172,7 +170,6 @@ var Pubsub = function (myconfig) {
                     <img class="" src="dist/img/emoticon/${data.emotion}.png" alt="">
 </div>                    
 `;
-
                     obj.append(emotion);
                     console.log("emotion: " + name + " - " + data.emotion);
                 }
@@ -207,6 +204,8 @@ var Pubsub = function (myconfig) {
 
                 /*REMOVE*/
                 $(config.area).html("");
+                checkVIP(false);
+
 
                 if (new_data.length != 0) {
 

@@ -1,7 +1,7 @@
 var FaceID = function () {
 
     var config = {
-        max_timeout: 1000 * 1,
+        max_timeout: 2000 * 1,
         ack_max_timeout: 1000 * 1,
 
         host: hiface_host,
