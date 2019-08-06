@@ -10,3 +10,5 @@
 admin/assets/node_modules/
 
 \.idea/codeStyles/codeStyleConfig\.xml
+
+\.env

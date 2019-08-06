@@ -8,24 +8,44 @@
 
 require("../vendor/autoload.php");
 
-$dotenv = Dotenv\Dotenv::create(__DIR__."/..");
+$dotenv = Dotenv\Dotenv::create(__DIR__ . "/..");
 $dotenv->load();
 
 require("AipHttpClient.php");
 
-//
+
 class FaceID
 {
     private $host;
+    private $analyze_host;
+    private $time_server;
+
     private $con;
     private $photo_album;
     private $http;
+
 
     public function __construct()
     {
 
         $this->http = new AipHttpClient();
         $this->host = getenv("HOST");
+        $this->analyze_host = getenv("ANALYZE");
+        $this->time_server = getenv("TIME_SERVER");
+    }
+
+    public function getTimeServer() {
+
+        $url = $this->time_server;
+
+        $result = $this->http->get($url);
+
+        if ($result["code"] == 200) {
+
+            return $result["content"];
+        }
+
+        return;
     }
 
     /**
@@ -122,6 +142,24 @@ class FaceID
         $result = $this->http->post($url, json_encode($data));
 
         return $result;
+    }
+
+    public function emotion($photoData)
+    {
+
+        $url = $this->analyze_host . "/api/agender/";
+
+        $result = $this->http->post($url, array(
+            "photoData" => $photoData
+        ));
+
+        if ($result["code"] == 200) {
+
+            return $result["content"];
+        }
+
+        return false;
+
     }
 
     public function getsub($subscribe, $param)

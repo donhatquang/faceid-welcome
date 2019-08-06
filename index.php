@@ -8,8 +8,6 @@ $dotenv->load();
 $host = getenv("EXTERNAL_HOST");
 
 
-//exit();
-
 $param = array(
 
     "wait" => 5,
