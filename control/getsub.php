@@ -10,6 +10,9 @@
 require("../model/FaceID.php");
 require("Tools.php");
 
+session_start();
+
+
 $FaceID = new FaceID();
 $url = $_SERVER['REQUEST_URI'];
 
@@ -23,10 +26,13 @@ if (isset($_GET["subscribe"])) {
     }';
 }
 
+$latestTime = isset($_SESSION["alertTime"]) ? $_SESSION["alertTime"] : "";
+
 $param = array(
 
     "maxWaitTimeSeconds" => 2,
-    "maxMessages" => 50
+    "maxMessages" => 50,
+    "latestTime" => $latestTime
 );
 
 if (isset($_GET["wait"])) {
@@ -43,12 +49,15 @@ $threshold = getenv("THRESHOLD");
 $threshold = isset($_GET["threshold"]) ? $_GET["threshold"] : $threshold;
 
 /*GET SUBSCRIBE*/
-$sub = $FaceID->getsub($subscribe, $param);
 
+$sub = $FaceID->getsub($subscribe, $param);
+//exit();
 //var_dump($sub);
 
 $data = array();
 $Tool = new Tools();
+
+
 
 foreach ($sub as $key => $item) {
 
@@ -70,7 +79,8 @@ foreach ($sub as $key => $item) {
             "capturedTime" => $person->capturedTime,
             "capturedTimeFormat" => $Tool->UTC2Local($person->capturedTime),
             "messageType" => $person->messageType,
-            "videoId" => $person->videoId
+            "videoId" => $person->videoId,
+            "alertTime" => $item["alertTime"]
 
         );
 

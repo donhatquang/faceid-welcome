@@ -1,19 +1,21 @@
 var FaceID = function () {
 
     var config = {
-        max_timeout: 1000 * 1,
+        max_timeout: 1500 * 1,
+        time_server_timeout: 1000,
         ack_max_timeout: 1000 * 1,
 
         host: hiface_host,
         area: '.faceid-list',
         flag: true, /*true is init ready*/
 
-        waiting_time: 3 * 60,
+        waiting_time: 30,
 
-        ack: false,
+        ack: true,
         realtime: false,
         analyze: false
     };
+
 
     var Hiface_param = {};
     // var subscribe = subscribe_config;
@@ -60,6 +62,23 @@ var FaceID = function () {
     /*ACK*/
     //messageType=="MESSAGE_TYPE_ALERT"
 
+    var getTimeServer = function () {
+
+        var url = "control/time_server.php";
+
+        $.getJSON(url, function (data) {
+
+            time_server = data.time;
+
+            let time_diff = tools.time_diff(new Date(time_server));
+            console.log(`Time Diff server: ${time_diff.second}s`);
+
+            setTimeout(getTimeServer, config.max_timeout);
+        });
+
+        return;
+    }
+
 
     /*GET VIDEO LIST*/
     var getList = function (act) {
@@ -89,6 +108,9 @@ var FaceID = function () {
 
         getList("videos");
         console.log("Hello HiFace");
+
+        /*GET TIME FROM SERVER*/
+        // getTimeServer();
     };
 
     /*DEFINE*/

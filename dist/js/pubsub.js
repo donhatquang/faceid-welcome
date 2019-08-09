@@ -3,13 +3,10 @@ var Pubsub = function (myconfig) {
     // var config = myface.config;
     var config;
     var request_param = request_param_global;
-
+    var alert_time = "";
 
     /*INIT UI*/
     this.subinit = function (data) {
-
-        // console.log(data);
-
 
         var area = config.area;
 
@@ -39,6 +36,8 @@ var Pubsub = function (myconfig) {
 
         var name = info.name;
         var capturedTime = new Date(person.capturedTime);
+
+        console.log(`Capture time: ${capturedTime}`);
 
         // var idPerson = info.idPerson;
 
@@ -84,26 +83,29 @@ var Pubsub = function (myconfig) {
 `;
 
         /*INIT*/
+        // console.log(time_server);
 
-        var timediff = tools.time_diff(capturedTime);
-        // console.log(timediff);
+        //COMPARE WITH TIME SERVER
+        // var time_diff = tools.time_diff(capturedTime, new Date(time_server));
+        var time_diff = tools.time_diff(capturedTime);
 
         /*CHECK VIP*/
         checkVIP(info);
 
-
+        // console.log("Real-Time Difference: "+timediff.second);
 
         /*REAL TIME DISPLAY*/
         if (config.realtime) {
 
-            if (timediff.second <= config.waiting_time) {
+            if (time_diff.second <= config.waiting_time) {
+
 
                 $(area).append(text);
             }
 
 
             // console.log("History: " + name + " - " + tools.formatDate(capturedTime).fulltime + " - Minute: " + timediff.minute + " - Second: " + timediff.second);
-            console.log("History: " + timediff.second + "s ago");
+            console.log("History: " + time_diff.second + "s ago");
 
         }
 
@@ -140,7 +142,7 @@ var Pubsub = function (myconfig) {
         }
 
 
-        $(config.background).css("background-image",`url(/dist/image/${bg})`);
+        $(config.background).css("background-image", `url(/dist/image/${bg})`);
 
         return;
     }
@@ -151,7 +153,7 @@ var Pubsub = function (myconfig) {
         /*EMOTICON*/
         let url = "control/emotion.php";
         let param = {
-            photoData: hiface_host+"/photos/" + capture + "/data"
+            photoData: hiface_host + "/photos/" + capture + "/data"
         };
         let obj = $("div[data-rel='" + photoID + "']");
 
@@ -198,6 +200,8 @@ var Pubsub = function (myconfig) {
             //$(".people").length == 0
             //data.length != 0
 
+            console.log("Time server: "+time_server);
+
             if (flag == true || (flag == false && $(".people").length == 0)) {
 
                 /*INIT DATA*/
@@ -209,12 +213,15 @@ var Pubsub = function (myconfig) {
 
                 if (new_data.length != 0) {
 
+                    /*SAVE LAST TIME*/
+                    
+
                     for (i in new_data) {
 
                         let person = new_data[i];
 
                         /*DISPLAY 3 PERSON*/
-                        if (i<3)
+                        if (i < 3)
                             pubsub.subinit(person);
                     }
                 }
@@ -224,9 +231,7 @@ var Pubsub = function (myconfig) {
                 // Hiface_collection = new_data;
                 myface.collection = new_data;
 
-                // console.log(Hiface_collection);
             }
-
 
             /*CONFIRM MESSAGE ACK*/
             if (new_data.length != 0) {
@@ -237,6 +242,9 @@ var Pubsub = function (myconfig) {
             // console.log("Flag: " + flag);
             console.log("---------------------------------\n");
 
+            /*ALERT TIME*/
+
+
 
             /*REQUEST AGAIN*/
             setTimeout(pubsub.getsub, config.max_timeout);
@@ -244,9 +252,8 @@ var Pubsub = function (myconfig) {
 
         })
 
-            /*FAIL CHECK*/
+        /*FAIL CHECK*/
             .fail(
-
                 function (jqxhr, textStatus, error) {
 
                     var err = textStatus + ", " + error;

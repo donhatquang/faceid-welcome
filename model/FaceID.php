@@ -24,6 +24,8 @@ class FaceID
     private $photo_album;
     private $http;
 
+    private $pubsub_host;
+
 
     public function __construct()
     {
@@ -32,20 +34,40 @@ class FaceID
         $this->host = getenv("HOST");
         $this->analyze_host = getenv("ANALYZE");
         $this->time_server = getenv("TIME_SERVER");
+
+        $this->pubsub_host = getenv("PUBSUB_HOST");
     }
 
-    public function getTimeServer() {
+    public function getTimeServer()
+    {
 
-        $url = $this->time_server;
+        try {
 
-        $result = $this->http->get($url);
+            /*$url = $this->time_server;
 
-        if ($result["code"] == 200) {
+            $result = $this->http->get($url);
 
-            return $result["content"];
+            if ($result["code"] == 200) {
+
+                return $result["content"];
+            }*/
+
+
+            $result = array(
+
+                "time" => gmdate("Y-m-d\TH:i:s\Z")
+            );
+
+
+            return json_encode($result);
+        } catch (Exception $exception) {
+
+            echo ($exception);
+
+
         }
 
-        return;
+
     }
 
     /**
@@ -168,7 +190,7 @@ class FaceID
         //API URL
         $subscribe = rawurlencode($subscribe);
 
-        $url = $this->host . '/subscriptions/' . $subscribe . "/messages";
+        $url = $this->pubsub_host . '/subscriptions/' . $subscribe . "/messages";
 
         $result = $this->http->get($url, $param);
 
@@ -177,6 +199,11 @@ class FaceID
             $result = json_decode($result["content"], true);
             $result = $result["receivedMessages"];
 
+            /*UPDATE TIME*/
+            if (count($result) != 0) {
+
+                $_SESSION["alertTime"] = $result[0]["alertTime"];
+            }
 
         }
 
