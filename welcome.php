@@ -2,8 +2,8 @@
 
 $param = array(
 
-    "wait" => 5,
-    "limit" => 10
+    "wait" => 2,
+    "limit" => 30
 );
 
 if (isset($_GET["wait"])) {

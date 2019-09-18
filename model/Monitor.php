@@ -73,10 +73,19 @@ class Monitor
     public function addDB($photoID, $param)
     {
 
-        $face = $param->analyze;
+//        var_dump($param->analyze);
 
-        $quality = round($face->attributes->quality * 100, 2);
-        $face_analyze = json_encode($face->attributes);
+        if ($param->analyze == true) {
+
+            $face = $param->analyze;
+
+            $quality = round($face->attributes->quality * 100, 2);
+            $face_analyze = json_encode($face->attributes);
+        } else {
+
+            $quality = 0;
+            $face_analyze = "";
+        }
 
 
         $sql = "INSERT INTO `monitor`(`photoID`, `name`, `face_analyze`,`quality`, `capture`, `camera`)

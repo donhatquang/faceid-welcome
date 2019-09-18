@@ -15,6 +15,7 @@ $FaceID = new FaceID();
 $host = $FaceID->getHost();
 $Monitor = new Monitor($con);
 
+
 /*SET DB*/
 
 if (isset($_GET["photoID"])) {

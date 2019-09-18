@@ -5,6 +5,7 @@
  * Date: 2/26/2019
  * Time: 2:17 PM
  */
+session_start();
 
 require("../vendor/autoload.php");
 
@@ -24,34 +25,50 @@ class FaceID
     private $photo_album;
     private $http;
 
-    private $pubsub_host;
-
 
     public function __construct()
     {
 
         $this->http = new AipHttpClient();
-        $this->host = getenv("HOST");
-        $this->analyze_host = getenv("ANALYZE");
-        $this->time_server = getenv("TIME_SERVER");
+        $this->checkSetting();
+    }
 
-        $this->pubsub_host = getenv("PUBSUB_HOST");
+    public function checkSetting()
+    {
+
+
+
+
+        if (isset($_SESSION["param"])) {
+
+            $param = $_SESSION["param"];
+        }
+        else {
+
+            $param = array(
+
+                "host" => getenv("HOST"),
+                "analyze_host" => getenv("ANALYZE")
+
+            );
+
+            /*SET VAR*/
+            $_SESSION["param"] = $param;
+        }
+
+//        var_dump($param);
+//        exit();
+
+        $this->host = $param["host"];
+        $this->analyze_host = $param["analyze_host"];
+
+        return;
     }
 
     public function getTimeServer()
     {
 
         try {
-
-            /*$url = $this->time_server;
-
-            $result = $this->http->get($url);
-
-            if ($result["code"] == 200) {
-
-                return $result["content"];
-            }*/
-
 
             $result = array(
 
@@ -62,11 +79,10 @@ class FaceID
             return json_encode($result);
         } catch (Exception $exception) {
 
-            echo ($exception);
+            echo($exception);
 
 
         }
-
 
     }
 
@@ -190,7 +206,9 @@ class FaceID
         //API URL
         $subscribe = rawurlencode($subscribe);
 
-        $url = $this->pubsub_host . '/subscriptions/' . $subscribe . "/messages";
+        $url = $this->host . '/subscriptions/' . $subscribe . "/messages";
+
+//        var_dump($param);
 
         $result = $this->http->get($url, $param);
 
@@ -202,7 +220,7 @@ class FaceID
             /*UPDATE TIME*/
             if (count($result) != 0) {
 
-                $_SESSION["alertTime"] = $result[0]["alertTime"];
+                $_SESSION["alertTime"] = $result[0]["message"]["publishTime"];
             }
 
         }

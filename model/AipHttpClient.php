@@ -139,7 +139,7 @@ class AipHttpClient
     public function getJSON($url, $params)
     {
 
-        echo $url = $this->buildUrl($url, $params);
+        $url = $this->buildUrl($url, $params);
 
         //  Initiate curl
         $ch = curl_init();

@@ -1,18 +1,18 @@
 var FaceID = function () {
 
     var config = {
-        max_timeout: 1500 * 1,
-        time_server_timeout: 1000,
+        max_timeout: 1000 * 1,
+        time_server_timeout: 10*1000,
         ack_max_timeout: 1000 * 1,
 
         host: hiface_host,
         area: '.faceid-list',
         flag: true, /*true is init ready*/
 
-        waiting_time: 30,
+        waiting_time: 100,
 
-        ack: false,
-        realtime: false,
+        ack: true,
+        realtime: true,
         analyze: false
     };
 

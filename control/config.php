@@ -1,12 +1,4 @@
 <?php
-/*$hostname = "localhost";
-$user = "root";
-$password = "root";*/
-
-/*$hostname = "192.168.51.k4";
-$user = "tvlab";
-$password = "TinhvanTVLAB20!*";*/
-
 $hostname = getenv("DB_HOST");
 $user = getenv("DB_USER");
 $password = getenv("DB_PASS");

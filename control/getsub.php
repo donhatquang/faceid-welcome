@@ -6,14 +6,16 @@
  * Time: 5:08 PM
  */
 //header("Content-type: application/json; charset:utf-8");
-
+require("../model/Monitor.php");
 require("../model/FaceID.php");
 require("Tools.php");
+require("../control/config.php");
 
-session_start();
-
+//session_start();
 
 $FaceID = new FaceID();
+$Monitor = new Monitor($con);
+
 $url = $_SERVER['REQUEST_URI'];
 
 if (isset($_GET["subscribe"])) {
@@ -53,10 +55,10 @@ $threshold = isset($_GET["threshold"]) ? $_GET["threshold"] : $threshold;
 $sub = $FaceID->getsub($subscribe, $param);
 //exit();
 //var_dump($sub);
+//exit();
 
 $data = array();
 $Tool = new Tools();
-
 
 
 foreach ($sub as $key => $item) {
@@ -80,30 +82,31 @@ foreach ($sub as $key => $item) {
             "capturedTimeFormat" => $Tool->UTC2Local($person->capturedTime),
             "messageType" => $person->messageType,
             "videoId" => $person->videoId,
-            "alertTime" => $item["alertTime"]
+            "alertTime" => $item["message"]["publishTime"]
 
         );
 
+//        var_dump($result);
+        $photoID = $result["photoID"];
 
-        /*INSERT DB*/
-        $param = (object)array(
-
-            "name" => $name,
-            "capture" => $capture,
-            "analyze" => $faces->faces[0],
-            "video" => $video
-        );
 
         /*CHECK THRESH HOLD*/
         $data[] = $result;
 
-        if (isset($person->clipId) && $person->clipId != "") {
+//        if (isset($person->clipId) && $person->clipId != "") {
 
-            $id = $Monitor->addPerson($person);
-        }
+        $id = $Monitor->addPerson($person);
 
+        $param = (object) array(
 
-//        var_dump($person);
+            "name" => $result["tags"]->name,
+            "capture" => $result["capture"],
+            "analyze" => false,
+            "video" => $result["videoId"]
+        );
+
+        $Monitor->addDB($photoID, $param);
+
     }
 }
 //var_dump($data);
