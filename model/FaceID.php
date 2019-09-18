@@ -5,20 +5,69 @@
  * Date: 2/26/2019
  * Time: 2:17 PM
  */
+
+require("../vendor/autoload.php");
+
+$dotenv = Dotenv\Dotenv::create(__DIR__ . "/..");
+$dotenv->load();
+
 require("AipHttpClient.php");
+
 
 class FaceID
 {
-    private $host = "http://192.168.51.12:8080/v4";
+    private $host;
+    private $analyze_host;
+    private $time_server;
+
     private $con;
     private $photo_album;
     private $http;
 
+    private $pubsub_host;
+
+
     public function __construct()
     {
-//        $this->host = $host;
 
         $this->http = new AipHttpClient();
+        $this->host = getenv("HOST");
+        $this->analyze_host = getenv("ANALYZE");
+        $this->time_server = getenv("TIME_SERVER");
+
+        $this->pubsub_host = getenv("PUBSUB_HOST");
+    }
+
+    public function getTimeServer()
+    {
+
+        try {
+
+            /*$url = $this->time_server;
+
+            $result = $this->http->get($url);
+
+            if ($result["code"] == 200) {
+
+                return $result["content"];
+            }*/
+
+
+            $result = array(
+
+                "time" => gmdate("Y-m-d\TH:i:s\Z")
+            );
+
+
+            return json_encode($result);
+        } catch (Exception $exception) {
+
+            echo ($exception);
+
+
+        }
+
+
     }
 
     /**
@@ -117,13 +166,31 @@ class FaceID
         return $result;
     }
 
+    public function emotion($photoData)
+    {
+
+        $url = $this->analyze_host . "/api/agender/";
+
+        $result = $this->http->post($url, array(
+            "photoData" => $photoData
+        ));
+
+        if ($result["code"] == 200) {
+
+            return $result["content"];
+        }
+
+        return false;
+
+    }
+
     public function getsub($subscribe, $param)
     {
 
         //API URL
         $subscribe = rawurlencode($subscribe);
 
-        $url = $this->host . '/subscriptions/' . $subscribe . "/messages";
+        $url = $this->pubsub_host . '/subscriptions/' . $subscribe . "/messages";
 
         $result = $this->http->get($url, $param);
 
@@ -132,6 +199,11 @@ class FaceID
             $result = json_decode($result["content"], true);
             $result = $result["receivedMessages"];
 
+            /*UPDATE TIME*/
+            if (count($result) != 0) {
+
+                $_SESSION["alertTime"] = $result[0]["alertTime"];
+            }
 
         }
 

@@ -6,7 +6,7 @@
  * Time: 4:51 PM
  */
 
-header("Content-type: application/json; charset:utf-8");
+//header("Content-type: application/json; charset:utf-8");
 
 $act = (isset($_GET["act"])) ? $_GET["act"] : "photoAlbums";
 

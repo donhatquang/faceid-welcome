@@ -43,45 +43,18 @@ var Tools = function () {
     /*REMOVE DUPLICATE */
     var removeDuplicates = function (json_all) {
 
-        var photoIDs = [],
-            // arr_name = [],
-            collection = [];
+        const map = new Map();
+        let collection = [];
 
-        for (index in json_all) {
+        for (let index in json_all) {
 
-            var person = json_all[index];
-            var photoID = person.photoID;
-            // var info = person.tags;
-
-            /*CHECK DUPLICATE*/
-            var index = $.inArray(photoID, photoIDs);
-
-            if (index == -1) {
-
-                photoIDs.push(photoID);
-
-                collection.push(person);
-            }
-
-            /*COMPARE TIME IF EXIST IN TEMP COLLECTION*/
-            else {
-
-                var person_before = collection[index];
-
-                var capturedTime_before = person_before.capturedTime;
-                var capturedTime_after = person.capturedTime;
-
-                /*TIME AFTER GREATER THAN BEFORE*/
-                if (new Date(capturedTime_after) > new Date(capturedTime_before)) {
-
-                    collection[index] = person;
-                    // console.log("Index: " + index + " time: " + time_diff(capturedTime_before,capturedTime_after).second + "s");
-                }
+            let json = json_all[index];
+            if (!map.has(json.photoID) && !map.has(json.tags.name)){
+                map.set(json.photoID, true);
+                map.set(json.tags.name, true);
+                collection.push(json);
             }
         }
-
-
-
         return collection;
     };
 

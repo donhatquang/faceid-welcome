@@ -98,7 +98,7 @@ var FaceAnalyze = function () {
 
         /*ADD GENDER*/
         /*ADD CUBE*/
-        obj.find(".people").after(image_gender).after(draw_cube(pose));
+        // obj.find(".people").after(image_gender).after(draw_cube(pose));
 
         return;
     }

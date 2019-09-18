@@ -1,19 +1,16 @@
 <?php
-
-
 /*$hostname = "localhost";
 $user = "root";
 $password = "root";*/
 
-$hostname = "192.168.51.28";
-$user = "hiface";
-$password = "Tinhvan@123";
+/*$hostname = "192.168.51.k4";
+$user = "tvlab";
+$password = "TinhvanTVLAB20!*";*/
 
-/*$hostname = "localhost";
-$user = "hiface";
-$password = "Tinhvan@123";*/
-
-$database = "faceid";
+$hostname = getenv("DB_HOST");
+$user = getenv("DB_USER");
+$password = getenv("DB_PASS");
+$database = getenv("DB_NAME");
 
 //ket noi csdl, ket qua tra ve bien $con
 function connectdb($servername, $username, $password, $dbname)

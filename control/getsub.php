@@ -9,17 +9,12 @@
 
 require("../model/FaceID.php");
 require("Tools.php");
-require("../model/Monitor.php");
-require("../control/config.php");
+
+session_start();
+
 
 $FaceID = new FaceID();
-$Monitor = new Monitor($con);
-
 $url = $_SERVER['REQUEST_URI'];
-//header("Refresh: 5; URL=$url");
-
-$FaceID = new FaceID();
-
 
 if (isset($_GET["subscribe"])) {
 
@@ -31,10 +26,13 @@ if (isset($_GET["subscribe"])) {
     }';
 }
 
+$latestTime = isset($_SESSION["alertTime"]) ? $_SESSION["alertTime"] : "";
+
 $param = array(
 
     "maxWaitTimeSeconds" => 2,
-    "maxMessages" => 5
+    "maxMessages" => 50,
+    "latestTime" => $latestTime
 );
 
 if (isset($_GET["wait"])) {
@@ -47,16 +45,20 @@ if (isset($_GET["limit"])) {
     $param["maxMessages"] = $_GET["limit"];
 }
 
-$threshold = 70;
+$threshold = getenv("THRESHOLD");
 $threshold = isset($_GET["threshold"]) ? $_GET["threshold"] : $threshold;
 
 /*GET SUBSCRIBE*/
+
 $sub = $FaceID->getsub($subscribe, $param);
+//exit();
+//var_dump($sub);
 
 $data = array();
 $Tool = new Tools();
 
-//var_dump($sub[0]);
+
+
 foreach ($sub as $key => $item) {
 
     $ackID = $item["ackId"];
@@ -65,9 +67,6 @@ foreach ($sub as $key => $item) {
 
     $person = base64_decode($item["message"]["data"]);
     $person = json_decode($person, false);
-
-//    dd($person);
-//    var_dump($person);
 
     if ($person->messageType == "MESSAGE_TYPE_ALERT") {
 
@@ -80,7 +79,19 @@ foreach ($sub as $key => $item) {
             "capturedTime" => $person->capturedTime,
             "capturedTimeFormat" => $Tool->UTC2Local($person->capturedTime),
             "messageType" => $person->messageType,
-            "videoId" => $person->videoId
+            "videoId" => $person->videoId,
+            "alertTime" => $item["alertTime"]
+
+        );
+
+
+        /*INSERT DB*/
+        $param = (object)array(
+
+            "name" => $name,
+            "capture" => $capture,
+            "analyze" => $faces->faces[0],
+            "video" => $video
         );
 
         /*CHECK THRESH HOLD*/

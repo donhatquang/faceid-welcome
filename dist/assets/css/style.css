@@ -1,139 +1,182 @@
-body{
+body {
     color: #050c2e;
     font-size: 15pt;
 }
+
+.header {
+    margin-bottom: 20px;
+}
+
 .confetti {
-    background-image: url("../../image/BG-01.png");
+    background-image: url("../../image/vpbank-bg.jpg");
+    /*vpbank-vip-bg.jpg*/
+
     background-size: cover;
     background-repeat: no-repeat;
     position: fixed;
     display: block;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     z-index: 0;
+
 }
+
 .logo {
     z-index: 0;
     width: 100%;
     background-size: cover;
 }
-.main{
+
+.main {
     display: flex;
     padding-bottom: 1%;
 }
-.layer{
+
+.layer {
     width: 100%;
     background-size: cover;
 }
-.interact{
+
+.interact {
     background-size: cover;
     padding: 10px;
     color: white;
-    background-color: #88b1e47a;
+    background-color: rgba(0, 0, 0, 0.75);
     border-radius: 45px;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 3%;
 }
-.interact-left{
-    min-height: 500px;
-    text-align: right;
-}
-.interact-right{
-    text-align: left;
-}
-.text-card{
+
+.text-card {
     padding-top: 15px;
     padding-bottom: 15px;
+    font-size: 40px;
 }
-.people{
-    width: 120px;
-    border-radius: 100%;
+
+.people {
+    width: 200px;
 }
-.progress-bar{
+
+.progress-bar {
     background-color: #25aeff;
 }
-.description {
-    font-size:small;
-}
-.crown-left{
+
+.crown-left {
     width: 25%;
     position: absolute;
     bottom: 78%;
     left: 56%;
 }
-.crown-right{
+
+.crown-right {
     width: 25%;
     position: absolute;
     bottom: 78%;
     left: 18%;
 }
-.result-people{
+
+.result-people {
     position: relative;
 }
-.gender-left{
+
+.gender-left {
     width: 18%;
     position: absolute;
     right: 1%;
     bottom: 0;
 }
-.gender-right{
+
+.gender-right {
     width: 18%;
     position: absolute;
     bottom: 0;
 }
 
+.image-cropper {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: auto;
+}
+
 /*CUBE*/
-.cube{
-    top:0;
-    left:0;
-    -webkit-transform-style:preserve-3d;
-    -moz-transform-style:preserve-3d;
-    transform-style:preserve-3d;
-    -webkit-transform-origin:15px 15px;
-    -moz-transform-origin:15px 15px;
-    -ms-transform-origin:15px 15px;
-    transform-origin:15px 15px
+.cube {
+    top: 0;
+    left: 0;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transform-origin: 15px 15px;
+    -moz-transform-origin: 15px 15px;
+    -ms-transform-origin: 15px 15px;
+    transform-origin: 15px 15px
 }
-.cube,.cube-side{
-    position:absolute;
-    height:50px;
-    width:50px
+
+.cube, .cube-side {
+    position: absolute;
+    height: 50px;
+    width: 50px
 }
-.cube-side{
-    background:#fff;
-    opacity:.2;
-    filter:alpha(opacity=20)
+
+.cube-side {
+    background: #fff;
+    opacity: .2;
+    filter: alpha(opacity=20)
 }
-.cube-front{
-    -webkit-transform:rotateX(0) rotateY(0) translateZ(15px);
-    -moz-transform:rotateX(0) rotateY(0) translateZ(15px);
-    transform:rotateX(0) rotateY(0) translateZ(15px);
-    background:#0073eb;
-    opacity:.8;
-    filter:alpha(opacity=80)
+
+.cube-front {
+    -webkit-transform: rotateX(0) rotateY(0) translateZ(15px);
+    -moz-transform: rotateX(0) rotateY(0) translateZ(15px);
+    transform: rotateX(0) rotateY(0) translateZ(15px);
+    background: #0073eb;
+    opacity: .8;
+    filter: alpha(opacity=80)
 }
-.cube-back{
-    -webkit-transform:rotateX(0) rotateY(0) translateZ(-15px);
-    -moz-transform:rotateX(0) rotateY(0) translateZ(-15px);
-    transform:rotateX(0) rotateY(0) translateZ(-15px)
+
+.cube-back {
+    -webkit-transform: rotateX(0) rotateY(0) translateZ(-15px);
+    -moz-transform: rotateX(0) rotateY(0) translateZ(-15px);
+    transform: rotateX(0) rotateY(0) translateZ(-15px)
 }
-.cube-right{
-    -webkit-transform:rotateX(0) rotateY(90deg) translateZ(15px);
-    -moz-transform:rotateX(0) rotateY(90deg) translateZ(15px);
-    transform:rotateX(0) rotateY(90deg) translateZ(15px)
+
+.cube-right {
+    -webkit-transform: rotateX(0) rotateY(90deg) translateZ(15px);
+    -moz-transform: rotateX(0) rotateY(90deg) translateZ(15px);
+    transform: rotateX(0) rotateY(90deg) translateZ(15px)
 }
-.cube-left{
-    -webkit-transform:rotateX(0) rotateY(-90deg) translateZ(15px);
-    -moz-transform:rotateX(0) rotateY(-90deg) translateZ(15px);
-    transform:rotateX(0) rotateY(-90deg) translateZ(15px)
+
+.cube-left {
+    -webkit-transform: rotateX(0) rotateY(-90deg) translateZ(15px);
+    -moz-transform: rotateX(0) rotateY(-90deg) translateZ(15px);
+    transform: rotateX(0) rotateY(-90deg) translateZ(15px)
 }
-.cube-top{
-    -webkit-transform:rotateX(90deg) rotateY(0) translateZ(15px);
-    -moz-transform:rotateX(90deg) rotateY(0) translateZ(15px);
-    transform:rotateX(90deg) rotateY(0) translateZ(15px)
+
+.cube-top {
+    -webkit-transform: rotateX(90deg) rotateY(0) translateZ(15px);
+    -moz-transform: rotateX(90deg) rotateY(0) translateZ(15px);
+    transform: rotateX(90deg) rotateY(0) translateZ(15px)
 }
-.cube-bottom{
-    -webkit-transform:rotateX(-90deg) rotateY(0) translateZ(15px);
-    -moz-transform:rotateX(-90deg) rotateY(0) translateZ(15px);
-    transform:rotateX(-90deg) rotateY(0) translateZ(15px)
+
+.cube-bottom {
+    -webkit-transform: rotateX(-90deg) rotateY(0) translateZ(15px);
+    -moz-transform: rotateX(-90deg) rotateY(0) translateZ(15px);
+    transform: rotateX(-90deg) rotateY(0) translateZ(15px)
+}
+
+.info-card {
+    position: relative;
+    margin: auto;
+}
+
+.emotion {
+    float: right;
+    position: relative;
+    margin: auto;
 }

@@ -1,5 +1,13 @@
 <?php
 
+require("vendor/autoload.php");
+
+$dotenv = Dotenv\Dotenv::create(__DIR__);
+$dotenv->load();
+
+$host = getenv("EXTERNAL_HOST");
+
+
 $param = array(
 
     "wait" => 5,
@@ -19,9 +27,10 @@ if (isset($_GET["limit"])) {
 if (isset($_GET["subscribe"])) {
 
     $param["subscribe"] = $_GET["subscribe"];
+
 } else {
 
-    $param["subscribe"] = "main";
+    $param["subscribe"] = getenv("SUBSCRIBE");
 }
 $param_str = json_encode($param);
 ?>
@@ -42,13 +51,18 @@ $param_str = json_encode($param);
 
 
         var request_param_global = <?php echo $param_str?>;
+        var hiface_host = "<?php echo getenv("HOST"); ?>";
     </script>
 
     <script src="dist/js/jquery-3.2.1.min.js"></script>
     <!--<script src='dist/js/responsivevoice.js'></script>-->
     <script src='dist/js/tools.js?<?php echo rand(); ?>'></script>
     <script src='dist/js/analyze.js?<?php echo rand(); ?>'></script>
+
+
     <script src='dist/js/FaceID.js?<?php echo rand(); ?>'></script>
+    <script src='dist/js/pubsub.js?<?php echo rand(); ?>'></script>
+
 
     <script src='dist/js/main.js?<?php echo rand(); ?>'></script>
 
@@ -58,31 +72,14 @@ $param_str = json_encode($param);
 <div class="container-fluid">
     <div class="confetti">
     </div>
-    <div class="header">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-4"></div>
-                <div class="col-xl-4">
-                    <img src="dist/image/Materials-01-02.png" class="logo">
-                </div>
-                <div class="col-xl-4"></div>
-            </div>
-        </div>
-    </div>
     <div class="main">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xl-5 interact interact-left">
-                    <div class="container-fluid faceid-list faceid-list-1 ">
+                <div class="col-xl-11 interact interact-left">
+                    <div class="container-fluid faceid-list">
 
 
                     </div>
-                </div>
-                <div class="col-xl-2 d-flex align-items-center">
-                    <img class="layer" src="dist/image/Materials-01-04.png">
-                </div>
-                <div class="col-xl-5 interact interact-right">
-                    <div class="container-fluid faceid-list faceid-list-2"></div>
                 </div>
             </div>
         </div>
