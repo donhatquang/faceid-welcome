@@ -64,25 +64,6 @@ class Monitor
         $sql = "INSERT INTO `monitor`(`photoID`, `name`, `face_analyze`,`quality`, `capture`, `camera`)
           VALUES ('" . $photoID . "', '" . $param->name . "', '" . $face_analyze . "', '" . $quality . "', '" . $param->capture . "', '".$param->video."')";
 
-        /*
-                $getPerson = $this->getPerson($photoID);
-
-                if ($getPerson == false) {
-
-
-
-                } else {
-
-                    $sql = "UPDATE `monitor` SET
-        `quality` = '91.4',
-        `face_analyze` = '" . $face_analyze . "',
-        `quality` = '" . $quality . "',
-        `capture` = '" . $capture . "'
-
-         WHERE `monitor`.`id` LIKE '" . $getPerson->id . "'";
-
-                }*/
-
         $this->con->query($sql);
 
         return $id = $this->con->insert_id;

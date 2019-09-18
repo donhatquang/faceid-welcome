@@ -84,6 +84,16 @@ foreach ($sub as $key => $item) {
 
         );
 
+
+        /*INSERT DB*/
+        $param = (object)array(
+
+            "name" => $name,
+            "capture" => $capture,
+            "analyze" => $faces->faces[0],
+            "video" => $video
+        );
+
         /*CHECK THRESH HOLD*/
         $data[] = $person;
 

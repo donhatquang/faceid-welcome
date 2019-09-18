@@ -11,7 +11,7 @@ var FaceID = function () {
 
         waiting_time: 30,
 
-        ack: true,
+        ack: false,
         realtime: false,
         analyze: false
     };
@@ -71,7 +71,8 @@ var FaceID = function () {
             time_server = data.time;
 
             let time_diff = tools.time_diff(new Date(time_server));
-            console.log(`Time Diff server: ${time_diff.second}s`);
+
+            // console.log(`Time Diff server: ${time_diff.second}s`);
 
             setTimeout(getTimeServer, config.max_timeout);
         });
@@ -110,7 +111,7 @@ var FaceID = function () {
         console.log("Hello HiFace");
 
         /*GET TIME FROM SERVER*/
-        // getTimeServer();
+        getTimeServer();
     };
 
     /*DEFINE*/

@@ -28,8 +28,11 @@ var Pubsub = function (myconfig) {
 
         var info = person.tags;
 
+
+        console.log(person);
+
         var photoID = person.photoID;
-        var capture = person.capture;
+        // var capture = person.capture;
         // var score = Math.round(person.score);
 
         /*THRESH-HOLD*/
@@ -45,7 +48,7 @@ var Pubsub = function (myconfig) {
         var image = $("<img />").attr({
 
             "class": "image-cropper",
-            "src": config.host + '/photos/' + capture + '/data'
+            "src": config.host + '/photos/'  + photoID + '/data'
 
         }).prop('outerHTML');
 
@@ -64,10 +67,10 @@ var Pubsub = function (myconfig) {
             */'                            ' +
             '</div>\n';
 
-        var emotion = `
+       /* var emotion = `
             <div class="col-xl-2 emotion">
                 <img class="" src="dist/img/emoticon/unknown.png" alt="">
-            </div>`;
+            </div>`;*/
 
         var text = ` 
  
@@ -86,7 +89,6 @@ var Pubsub = function (myconfig) {
         // console.log(time_server);
 
         //COMPARE WITH TIME SERVER
-        // var time_diff = tools.time_diff(capturedTime, new Date(time_server));
         var time_diff = tools.time_diff(capturedTime);
 
         /*CHECK VIP*/
@@ -122,7 +124,7 @@ var Pubsub = function (myconfig) {
                 myanalyze.analyze(person);
 
             /*EMOTION*/
-            checkEmotion(capture, photoID, name);
+            // checkEmotion(capture, photoID, name);
 
 
         } catch (e) {
@@ -200,7 +202,7 @@ var Pubsub = function (myconfig) {
             //$(".people").length == 0
             //data.length != 0
 
-            console.log("Time server: "+time_server);
+            // console.log("Time server: "+time_server);
 
             if (flag == true || (flag == false && $(".people").length == 0)) {
 
